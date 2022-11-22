@@ -1,5 +1,6 @@
 package com.example.BoardGameEventBackend.service;
 
+import com.example.BoardGameEventBackend.exception.ForbiddenException;
 import com.example.BoardGameEventBackend.exception.UserNotFoundException;
 import com.example.BoardGameEventBackend.model.Role;
 import com.example.BoardGameEventBackend.model.User;
@@ -7,7 +8,10 @@ import com.example.BoardGameEventBackend.exception.UserExistsException;
 import com.example.BoardGameEventBackend.repository.RoleRepository;
 import com.example.BoardGameEventBackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +33,22 @@ public class UserService implements UserDetailsService {
 
     public List<User> getAllUsers(){
         return userRepository.findAll();
+    }
+
+    public User getUser(Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+
+        User user = userRepository.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
+
+        System.out.println(user.getId());
+
+        if (!authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).anyMatch(authority -> authority.contains("ADMIN")) && !id.equals(user.getId())){
+            throw new ForbiddenException();
+        }
+
+        return user;
     }
 
     public User saveUser(User user){
