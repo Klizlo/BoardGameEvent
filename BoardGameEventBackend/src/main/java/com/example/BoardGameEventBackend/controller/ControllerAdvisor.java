@@ -1,9 +1,6 @@
 package com.example.BoardGameEventBackend.controller;
 
-import com.example.BoardGameEventBackend.exception.RoleExistsException;
-import com.example.BoardGameEventBackend.exception.RoleNotFoundException;
-import com.example.BoardGameEventBackend.exception.UserExistsException;
-import com.example.BoardGameEventBackend.exception.UserNotFoundException;
+import com.example.BoardGameEventBackend.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -50,4 +47,51 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(nameToMessages, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BoardGameNotFoundExeption.class)
+    public ResponseEntity<?> boardGameNotFoundHandler(BoardGameNotFoundExeption exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BoardGameExistsException.class)
+    public ResponseEntity<?> boardGameExistsHandler(BoardGameExistsException exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BoardGameCategoryNotFoundExeption.class)
+    public ResponseEntity<?> boardGameCategoryNotFoundHandler(BoardGameCategoryNotFoundExeption exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BoardGameCategoryExistsException.class)
+    public ResponseEntity<?> boardGameCategoryExistsHandler(BoardGameCategoryExistsException exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ProducerNotFoundExeption.class)
+    public ResponseEntity<?> producerNotFoundHandler(ProducerNotFoundExeption exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProducerExistsException.class)
+    public ResponseEntity<?> producerExistsHandler(ProducerExistsException exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.BAD_REQUEST);
+    }
 }
