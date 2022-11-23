@@ -82,11 +82,11 @@ public class UserService implements UserDetailsService {
             throw new ForbiddenException();
         }
 
-        if(userRepository.existsByUsername(user.getUsername())){
+        if(userRepository.existsByUsername(user.getUsername()) && !user.getUsername().equals(userToEdit.getUsername())){
             throw new UserExistsException("Username " + user.getUsername() + " is already taken");
         }
 
-        if(userRepository.existsByEmail(user.getEmail())){
+        if(userRepository.existsByEmail(user.getEmail()) && !user.getEmail().equals(userToEdit.getEmail())){
             throw new UserExistsException("Email " + user.getEmail() + " is already taken");
         }
 
