@@ -20,7 +20,7 @@ public class BoardGameCategoryController {
         return boardGameCategoryService.getAllBoardGamesCategories();
     }
 
-    @GetMapping("/boardGamesCategory/{id}")
+    @GetMapping("/boardGameCategory/{id}")
     public BoardGameCategory getBoardGameCategory(@PathVariable Long id){
         return boardGameCategoryService.getBoardGameCategory(id);
     }
