@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
 
-        if (!authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).anyMatch(authority -> authority.contains("ADMIN")) && !id.equals(user.getId())){
+        if (authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(authority -> authority.contains("ADMIN")) && !id.equals(user.getId())){
             throw new ForbiddenException();
         }
 
@@ -77,7 +77,7 @@ public class UserService implements UserDetailsService {
 
         User userToEdit = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
 
-        if(!authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).anyMatch(role -> role.contains("ADMIN"))
+        if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
                 && !loggedUser.getId().equals(id)){
             throw new ForbiddenException();
         }
@@ -92,7 +92,6 @@ public class UserService implements UserDetailsService {
 
         userToEdit.setUsername(user.getUsername());
         userToEdit.setEmail(user.getEmail());
-        userToEdit.setPassword(user.getPassword());
 
         return userRepository.save(userToEdit);
     }
@@ -117,7 +116,7 @@ public class UserService implements UserDetailsService {
         User loggedUser = userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
 
-        if(!authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).anyMatch(role -> role.contains("ADMIN"))
+        if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
                 && !loggedUser.getId().equals(id)){
             throw new ForbiddenException();
         }

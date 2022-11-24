@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -25,19 +26,19 @@ public class BoardGameController {
         return boardGameService.getBoardGame(id);
     }
 
-    @PostMapping("/boardGame")
+    @PostMapping("/boardGames")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGame saveBoardGame(@RequestBody BoardGame boardGame){
+    public BoardGame saveBoardGame(@Valid @RequestBody BoardGame boardGame){
         return boardGameService.saveBoardGame(boardGame);
     }
 
-    @PutMapping("/boardGame/{id}")
+    @PutMapping("/boardGames/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGame updateBoardGame(@PathVariable Long id, @RequestBody BoardGame boardGame){
+    public BoardGame updateBoardGame(@PathVariable Long id, @Valid @RequestBody BoardGame boardGame){
         return boardGameService.updateBoardGame(id, boardGame);
     }
 
-    @DeleteMapping("/boardGame/{id}")
+    @DeleteMapping("/boardGames/{id}")
     public void deleteBoardGame(@PathVariable Long id){
         boardGameService.delete(id);
     }

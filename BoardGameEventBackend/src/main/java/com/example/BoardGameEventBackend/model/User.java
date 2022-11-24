@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(unique = true, nullable = false)
+    @NotNull
     String username;
     @Column(unique = true, nullable = false)
+    @NotNull
     String email;
     @Column(unique = true, nullable = false)
+    @NotNull
     String password;
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     LocalDate createdAt;
     @LastModifiedDate
     LocalDate updatedAt;

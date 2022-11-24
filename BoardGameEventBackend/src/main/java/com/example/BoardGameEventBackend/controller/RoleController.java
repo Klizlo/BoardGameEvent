@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -30,13 +31,13 @@ public class RoleController {
 
     @PostMapping("/roles")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Role addRole(@RequestBody Role role){
+    public Role addRole(@Valid @RequestBody Role role){
         return roleService.addRole(role);
     }
 
     @PutMapping("/roles/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Role updateRole(@PathVariable Long id, @RequestBody Role role){
+    public Role updateRole(@PathVariable Long id, @Valid  @RequestBody Role role){
         return roleService.updateRole(id, role);
     }
 

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -20,24 +21,24 @@ public class ProducerController {
         return producerService.getAllProducers();
     }
 
-    @GetMapping("/producer/{id}")
+    @GetMapping("/producers/{id}")
     public Producer getProducer(@PathVariable Long id){
         return producerService.getProducer(id);
     }
 
-    @PostMapping("/producer")
+    @PostMapping("/producers")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Producer saveProducer(@RequestBody Producer producer){
+    public Producer saveProducer(@Valid @RequestBody Producer producer){
         return producerService.saveProducer(producer);
     }
 
-    @PutMapping("/producer/{id}")
+    @PutMapping("/producers/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Producer updateProducer(@PathVariable Long id, @RequestBody Producer producer){
+    public Producer updateProducer(@PathVariable Long id, @Valid @RequestBody Producer producer){
         return producerService.updateProducer(id, producer);
     }
 
-    @DeleteMapping("/producer/{id}")
+    @DeleteMapping("/producers/{id}")
     public void deleteProducer(@PathVariable Long id){
         producerService.delete(id);
     }

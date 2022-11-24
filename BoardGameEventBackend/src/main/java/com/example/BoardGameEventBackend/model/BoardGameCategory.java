@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -21,10 +22,11 @@ public class BoardGameCategory {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotNull
     private String name;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDate createdAt;
 
     @LastModifiedDate

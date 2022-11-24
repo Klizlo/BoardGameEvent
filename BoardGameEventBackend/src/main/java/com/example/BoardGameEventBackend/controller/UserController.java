@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -37,17 +38,18 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public User updateUser(@PathVariable Long id, @RequestBody User user){
+    public User updateUser(@PathVariable Long id, @Valid @RequestBody User user){
         return userService.updateUser(id, user);
     }
 
     @PutMapping("/users/{id}/roles")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User addRolesToUser(@PathVariable Long id, @RequestBody List<Role> roles){
+    public User addRolesToUser(@PathVariable Long id, @Valid @RequestBody List<Role> roles){
         return userService.addRolesToUser(id, roles);
     }
 
     @DeleteMapping("/users/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     public void deleteUser(@PathVariable Long id){
         userService.delete(id);
     }

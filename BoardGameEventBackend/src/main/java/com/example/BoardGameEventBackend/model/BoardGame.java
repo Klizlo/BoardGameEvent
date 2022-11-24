@@ -1,5 +1,6 @@
 package com.example.BoardGameEventBackend.model;
 
+import com.example.BoardGameEventBackend.converter.AgeRestrictionConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,6 +8,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -21,19 +26,24 @@ public class BoardGame {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotNull
     private String name;
 
     @Column(nullable = false)
+    @Min(1)
     private int minNumberOfPlayers;
 
     @Column(nullable = false)
+    @Max(6)
     private int maxNumberOfPlayers;
 
     @Column(nullable = false)
-    private age ageRestriction;
+    @Convert(converter = AgeRestrictionConverter.class)
+    @NotNull
+    private AgeRestriction ageRestriction;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDate createdAt;
 
     @LastModifiedDate
@@ -46,8 +56,4 @@ public class BoardGame {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "producerId")
     private Producer producer;
-
-    public enum age {
-        PLUS_SEVEN, PLUS_FOURTEEN, PLUS_EIGHTEEN
-    }
 }
