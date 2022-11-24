@@ -94,4 +94,20 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         nameToMessages.put("msg", exception.getMessage());
         return new ResponseEntity<>(nameToMessages, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(GameEventNotFoundException.class)
+    public ResponseEntity<?> gameEventNotFoundHandler(GameEventNotFoundException exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(GameEventExistsException.class)
+    public ResponseEntity<?> gameEventExistsHandler(GameEventExistsException exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.BAD_REQUEST);
+    }
 }
