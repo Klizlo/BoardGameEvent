@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,7 +22,7 @@ public class UserDtoMapper {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .roleDtos(new HashSet<>(RoleDtoMapper.mapToRoleDtos(user.getRoles().stream().toList())))
+                .roles(new HashSet<>(RoleDtoMapper.mapToRoleDtos(user.getRoles().stream().toList())))
                 .build();
     }
 

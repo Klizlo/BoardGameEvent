@@ -54,10 +54,10 @@ public class BoardGame {
     private LocalDate updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardGameCategoryId")
+    @JoinColumn(name = "boardGameCategoryId", updatable = false, insertable = false)
     private BoardGameCategory boardGameCategory;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "producerId")
+    @JoinColumn(name = "producerId", updatable = false, insertable = false)
     private Producer producer;
 }

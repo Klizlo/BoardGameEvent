@@ -1,5 +1,7 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.BoardGameCategoryDto;
+import com.example.BoardGameEventBackend.dto.BoardGameCategoryDtoMapper;
 import com.example.BoardGameEventBackend.model.BoardGameCategory;
 import com.example.BoardGameEventBackend.service.BoardGameCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +19,28 @@ public class BoardGameCategoryController {
     private final BoardGameCategoryService boardGameCategoryService;
 
     @GetMapping("/boardGamesCategories")
-    public List<BoardGameCategory> getAllBoardGamesCategories(){
-        return boardGameCategoryService.getAllBoardGamesCategories();
+    public List<BoardGameCategoryDto> getAllBoardGamesCategories(){
+        return BoardGameCategoryDtoMapper.mapToBoardGameCategoryDtos(boardGameCategoryService.getAllBoardGamesCategories());
     }
 
     @GetMapping("/boardGamesCategories/{id}")
-    public BoardGameCategory getBoardGameCategory(@PathVariable Long id){
-        return boardGameCategoryService.getBoardGameCategory(id);
+    public BoardGameCategoryDto getBoardGameCategory(@PathVariable Long id){
+        return BoardGameCategoryDtoMapper
+                .mapToBoardGameCategoryDto(boardGameCategoryService.getBoardGameCategory(id));
     }
 
     @PostMapping("/boardGameCategories")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGameCategory saveBoardGameCategory(@Valid @RequestBody BoardGameCategory boardGameCategory){
-        return boardGameCategoryService.saveBoardGameCategory(boardGameCategory);
+    public BoardGameCategoryDto saveBoardGameCategory(@Valid @RequestBody BoardGameCategory boardGameCategory){
+        return BoardGameCategoryDtoMapper
+                .mapToBoardGameCategoryDto(boardGameCategoryService.saveBoardGameCategory(boardGameCategory));
     }
 
     @PutMapping("/boardGameCategories/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGameCategory updateBoardGameCategory(@PathVariable Long id, @Valid @RequestBody BoardGameCategory boardGameCategory){
-        return boardGameCategoryService.updateBoardGameCategory(id, boardGameCategory);
+    public BoardGameCategoryDto updateBoardGameCategory(@PathVariable Long id, @Valid @RequestBody BoardGameCategory boardGameCategory){
+        return BoardGameCategoryDtoMapper
+                .mapToBoardGameCategoryDto(boardGameCategoryService.updateBoardGameCategory(id, boardGameCategory));
     }
 
     @DeleteMapping("/boardGameCategories/{id}")

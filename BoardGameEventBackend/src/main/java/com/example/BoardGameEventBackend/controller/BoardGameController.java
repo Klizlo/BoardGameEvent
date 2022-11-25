@@ -1,5 +1,7 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.BoardGameDto;
+import com.example.BoardGameEventBackend.dto.BoardGameDtoMapper;
 import com.example.BoardGameEventBackend.model.BoardGame;
 import com.example.BoardGameEventBackend.service.BoardGameService;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +19,25 @@ public class BoardGameController {
     private final BoardGameService boardGameService;
 
     @GetMapping("/boardGames")
-    public List<BoardGame> getAllBoardGames(){
-        return boardGameService.getAllBoardGames();
+    public List<BoardGameDto> getAllBoardGames(){
+        return BoardGameDtoMapper.mapToBoardGameDtos(boardGameService.getAllBoardGames());
     }
 
     @GetMapping("/boardGames/{id}")
-    public BoardGame getBoardGame(@PathVariable Long id){
-        return boardGameService.getBoardGame(id);
+    public BoardGameDto getBoardGame(@PathVariable Long id){
+        return BoardGameDtoMapper.mapToBoardGameDto(boardGameService.getBoardGame(id));
     }
 
     @PostMapping("/boardGames")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGame saveBoardGame(@Valid @RequestBody BoardGame boardGame){
-        return boardGameService.saveBoardGame(boardGame);
+    public BoardGameDto saveBoardGame(@Valid @RequestBody BoardGame boardGame){
+        return BoardGameDtoMapper.mapToBoardGameDto(boardGameService.saveBoardGame(boardGame));
     }
 
     @PutMapping("/boardGames/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGame updateBoardGame(@PathVariable Long id, @Valid @RequestBody BoardGame boardGame){
-        return boardGameService.updateBoardGame(id, boardGame);
+    public BoardGameDto updateBoardGame(@PathVariable Long id, @Valid @RequestBody BoardGame boardGame){
+        return BoardGameDtoMapper.mapToBoardGameDto(boardGameService.updateBoardGame(id, boardGame));
     }
 
     @DeleteMapping("/boardGames/{id}")

@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,8 +17,7 @@ import java.util.Set;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "users")
-@ToString(exclude = "users")
+@ToString
 public class Role {
 
     @Id
@@ -33,6 +33,7 @@ public class Role {
     private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "roles")
+    @ToString.Exclude
     Set<User> users = new HashSet<>();
 
     public Role(String name){
@@ -47,4 +48,16 @@ public class Role {
         users.remove(user);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return id.equals(role.id) && name.equals(role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 }

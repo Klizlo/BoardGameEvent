@@ -1,5 +1,7 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.ProducerDto;
+import com.example.BoardGameEventBackend.dto.ProducerDtoMapper;
 import com.example.BoardGameEventBackend.model.Producer;
 import com.example.BoardGameEventBackend.service.ProducerService;
 import lombok.RequiredArgsConstructor;
@@ -17,28 +19,29 @@ public class ProducerController {
     private final ProducerService producerService;
 
     @GetMapping("/producers")
-    public List<Producer> getAllProducers(){
-        return producerService.getAllProducers();
+    public List<ProducerDto> getAllProducers(){
+        return ProducerDtoMapper.mapToProducerDtos(producerService.getAllProducers());
     }
 
     @GetMapping("/producers/{id}")
-    public Producer getProducer(@PathVariable Long id){
-        return producerService.getProducer(id);
+    public ProducerDto getProducer(@PathVariable Long id){
+        return ProducerDtoMapper.mapToProducerDto(producerService.getProducer(id));
     }
 
     @PostMapping("/producers")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Producer saveProducer(@Valid @RequestBody Producer producer){
-        return producerService.saveProducer(producer);
+    public ProducerDto saveProducer(@Valid @RequestBody Producer producer){
+        return ProducerDtoMapper.mapToProducerDto(producerService.saveProducer(producer));
     }
 
     @PutMapping("/producers/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Producer updateProducer(@PathVariable Long id, @Valid @RequestBody Producer producer){
-        return producerService.updateProducer(id, producer);
+    public ProducerDto updateProducer(@PathVariable Long id, @Valid @RequestBody Producer producer){
+        return ProducerDtoMapper.mapToProducerDto(producerService.updateProducer(id, producer));
     }
 
     @DeleteMapping("/producers/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteProducer(@PathVariable Long id){
         producerService.delete(id);
     }

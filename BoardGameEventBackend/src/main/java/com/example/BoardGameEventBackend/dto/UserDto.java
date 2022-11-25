@@ -13,6 +13,6 @@ public class UserDto {
     private Long id;
     private String username;
     private String email;
-    private Set<RoleDto> roleDtos;
+    private Set<RoleDto> roles;
 
 }

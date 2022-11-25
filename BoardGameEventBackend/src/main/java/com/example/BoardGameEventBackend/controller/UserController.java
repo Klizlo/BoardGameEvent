@@ -21,13 +21,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public List<UserDto> getAllUsers(){
         return UserDtoMapper.mapToUserDtos(userService.getAllUsers());
     }
 
     @GetMapping("/users/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public UserDto getUser(@PathVariable Long id){
         return UserDtoMapper.mapToUserDto(userService.getUser(id));
     }
