@@ -25,7 +25,7 @@ public class BoardGameService{
 
     public BoardGame saveBoardGame(BoardGame boardGame){
         if(boardGameRepository.existsByName(boardGame.getName())){
-            throw new BoardGameExistsException("Username " + boardGame.getName() + " is already taken");
+            throw new BoardGameExistsException("Name " + boardGame.getName() + " is already taken");
         }
 
         return boardGameRepository.save(boardGame);
