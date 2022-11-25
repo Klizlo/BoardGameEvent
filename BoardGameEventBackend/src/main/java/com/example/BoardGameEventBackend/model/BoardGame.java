@@ -1,7 +1,6 @@
 package com.example.BoardGameEventBackend.model;
 
 import com.example.BoardGameEventBackend.converter.AgeRestrictionConverter;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,16 +11,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "boardgame")
 @EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode
 @ToString
 public class BoardGame {
 
@@ -48,16 +48,43 @@ public class BoardGame {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardGameCategoryId", updatable = false, insertable = false)
+    @JoinColumn(name = "boardgamecategory_id", nullable = false)
+    @NotNull
     private BoardGameCategory boardGameCategory;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "producerId", updatable = false, insertable = false)
+    @JoinColumn(name = "producer_id", nullable = false)
+    @NotNull
     private Producer producer;
+
+    @OneToMany(mappedBy = "boardGame")
+    @ToString.Exclude
+    private List<Event> events = new ArrayList<>();
+
+    public void addEvent(Event event){
+        events.add(event);
+    }
+
+    public void removeEvent(Event event){
+        events.remove(event);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BoardGame boardGame = (BoardGame) o;
+        return minNumberOfPlayers == boardGame.minNumberOfPlayers && maxNumberOfPlayers == boardGame.maxNumberOfPlayers && id.equals(boardGame.id) && name.equals(boardGame.name) && ageRestriction == boardGame.ageRestriction && boardGameCategory.equals(boardGame.boardGameCategory) && producer.equals(boardGame.producer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, minNumberOfPlayers, maxNumberOfPlayers, ageRestriction, boardGameCategory, producer);
+    }
 }
