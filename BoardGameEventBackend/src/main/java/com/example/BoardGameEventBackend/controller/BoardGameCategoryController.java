@@ -1,11 +1,14 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.BoardGameCategoryDto;
+import com.example.BoardGameEventBackend.dto.BoardGameCategoryDtoMapper;
 import com.example.BoardGameEventBackend.model.BoardGameCategory;
 import com.example.BoardGameEventBackend.service.BoardGameCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -16,28 +19,31 @@ public class BoardGameCategoryController {
     private final BoardGameCategoryService boardGameCategoryService;
 
     @GetMapping("/boardGamesCategories")
-    public List<BoardGameCategory> getAllBoardGamesCategories(){
-        return boardGameCategoryService.getAllBoardGamesCategories();
+    public List<BoardGameCategoryDto> getAllBoardGamesCategories(){
+        return BoardGameCategoryDtoMapper.mapToBoardGameCategoryDtos(boardGameCategoryService.getAllBoardGamesCategories());
     }
 
-    @GetMapping("/boardGameCategory/{id}")
-    public BoardGameCategory getBoardGameCategory(@PathVariable Long id){
-        return boardGameCategoryService.getBoardGameCategory(id);
+    @GetMapping("/boardGamesCategories/{id}")
+    public BoardGameCategoryDto getBoardGameCategory(@PathVariable Long id){
+        return BoardGameCategoryDtoMapper
+                .mapToBoardGameCategoryDto(boardGameCategoryService.getBoardGameCategory(id));
     }
 
-    @PostMapping("/boardGameCategory")
+    @PostMapping("/boardGameCategories")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGameCategory saveBoardGameCategory(@RequestBody BoardGameCategory boardGameCategory){
-        return boardGameCategoryService.saveBoardGameCategory(boardGameCategory);
+    public BoardGameCategoryDto saveBoardGameCategory(@Valid @RequestBody BoardGameCategory boardGameCategory){
+        return BoardGameCategoryDtoMapper
+                .mapToBoardGameCategoryDto(boardGameCategoryService.saveBoardGameCategory(boardGameCategory));
     }
 
-    @PutMapping("/boardGameCategory/{id}")
+    @PutMapping("/boardGameCategories/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public BoardGameCategory updateBoardGameCategory(@PathVariable Long id, @RequestBody BoardGameCategory boardGameCategory){
-        return boardGameCategoryService.updateBoardGameCategory(id, boardGameCategory);
+    public BoardGameCategoryDto updateBoardGameCategory(@PathVariable Long id, @Valid @RequestBody BoardGameCategory boardGameCategory){
+        return BoardGameCategoryDtoMapper
+                .mapToBoardGameCategoryDto(boardGameCategoryService.updateBoardGameCategory(id, boardGameCategory));
     }
 
-    @DeleteMapping("/boardGameCategory/{id}")
+    @DeleteMapping("/boardGameCategories/{id}")
     public void deleteBoardGameCategory(@PathVariable Long id){
         boardGameCategoryService.delete(id);
     }

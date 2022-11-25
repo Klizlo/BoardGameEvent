@@ -5,6 +5,7 @@ import com.example.BoardGameEventBackend.security.UnauthorizedEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -42,6 +43,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/console/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/producers/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/boardGames/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/boardGameCategories/**").permitAll();
         http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();
     }

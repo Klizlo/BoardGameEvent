@@ -1,12 +1,19 @@
 package com.example.BoardGameEventBackend.model;
 
+import com.example.BoardGameEventBackend.converter.AgeRestrictionConverter;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -14,6 +21,8 @@ import java.time.LocalDate;
 @Setter
 @Table(name = "boardgame")
 @EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
+@ToString
 public class BoardGame {
 
     @Id
@@ -21,33 +30,34 @@ public class BoardGame {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotNull
     private String name;
 
     @Column(nullable = false)
+    @Min(1)
     private int minNumberOfPlayers;
 
     @Column(nullable = false)
+    @Max(6)
     private int maxNumberOfPlayers;
 
     @Column(nullable = false)
-    private age ageRestriction;
+    @Convert(converter = AgeRestrictionConverter.class)
+    @NotNull
+    private AgeRestriction ageRestriction;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDate createdAt;
 
     @LastModifiedDate
     private LocalDate updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardGameCategoryId")
+    @JoinColumn(name = "boardGameCategoryId", updatable = false, insertable = false)
     private BoardGameCategory boardGameCategory;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "producerId")
+    @JoinColumn(name = "producerId", updatable = false, insertable = false)
     private Producer producer;
-
-    public enum age {
-        PLUS_SEVEN, PLUS_FOURTEEN, PLUS_EIGHTEEN
-    }
 }

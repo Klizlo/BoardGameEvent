@@ -1,11 +1,14 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.ProducerDto;
+import com.example.BoardGameEventBackend.dto.ProducerDtoMapper;
 import com.example.BoardGameEventBackend.model.Producer;
 import com.example.BoardGameEventBackend.service.ProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -16,28 +19,29 @@ public class ProducerController {
     private final ProducerService producerService;
 
     @GetMapping("/producers")
-    public List<Producer> getAllProducers(){
-        return producerService.getAllProducers();
+    public List<ProducerDto> getAllProducers(){
+        return ProducerDtoMapper.mapToProducerDtos(producerService.getAllProducers());
     }
 
-    @GetMapping("/producer/{id}")
-    public Producer getProducer(@PathVariable Long id){
-        return producerService.getProducer(id);
+    @GetMapping("/producers/{id}")
+    public ProducerDto getProducer(@PathVariable Long id){
+        return ProducerDtoMapper.mapToProducerDto(producerService.getProducer(id));
     }
 
-    @PostMapping("/producer")
+    @PostMapping("/producers")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Producer saveProducer(@RequestBody Producer producer){
-        return producerService.saveProducer(producer);
+    public ProducerDto saveProducer(@Valid @RequestBody Producer producer){
+        return ProducerDtoMapper.mapToProducerDto(producerService.saveProducer(producer));
     }
 
-    @PutMapping("/producer/{id}")
+    @PutMapping("/producers/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Producer updateProducer(@PathVariable Long id, @RequestBody Producer producer){
-        return producerService.updateProducer(id, producer);
+    public ProducerDto updateProducer(@PathVariable Long id, @Valid @RequestBody Producer producer){
+        return ProducerDtoMapper.mapToProducerDto(producerService.updateProducer(id, producer));
     }
 
-    @DeleteMapping("/producer/{id}")
+    @DeleteMapping("/producers/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteProducer(@PathVariable Long id){
         producerService.delete(id);
     }
