@@ -1,7 +1,9 @@
 package com.example.BoardGameEventBackend.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 @Setter
 @Table(name = "boardgamecategory")
 @EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
+@ToString
 public class BoardGameCategory {
 
     @Id

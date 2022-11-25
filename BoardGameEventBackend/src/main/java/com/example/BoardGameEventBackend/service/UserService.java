@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service(value = "UserService")
 @RequiredArgsConstructor
@@ -59,9 +58,13 @@ public class UserService implements UserDetailsService {
             throw new UserExistsException("Email " + user.getEmail() + " is already taken");
         }
 
-        user.addRole(roleRepository
-                .findByName("USER")
-                .orElseGet(() -> roleRepository.save(new Role("USER"))));
+        if(user.getRoles().isEmpty()) {
+            user.addRole(roleRepository
+                    .findByName("USER")
+                    .orElseGet(() -> roleRepository.save(new Role("USER"))));
+        }
+
+        user.getRoles().forEach(role -> role.addUser(user));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -93,17 +96,10 @@ public class UserService implements UserDetailsService {
         userToEdit.setUsername(user.getUsername());
         userToEdit.setEmail(user.getEmail());
 
-        return userRepository.save(userToEdit);
-    }
-
-    public User addRolesToUser(Long id, List<Role> roles) {
-        User userToEdit = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
-
-        List<Role> rolesForUser = roleRepository.findAllByNameIn(roles.stream()
-                .map(Role::getName)
-                .collect(Collectors.toList()));
-
-        rolesForUser.forEach(userToEdit::addRole);
+        userToEdit.getRoles().stream()
+                .filter(roleToEdit -> !user.getRoles().contains(roleToEdit))
+                .forEach(roleToEdit -> roleToEdit.removeUser(user));
+        userToEdit.setRoles(user.getRoles());
 
         return userRepository.save(userToEdit);
     }

@@ -1,5 +1,7 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.UserDto;
+import com.example.BoardGameEventBackend.dto.UserDtoMapper;
 import com.example.BoardGameEventBackend.model.Role;
 import com.example.BoardGameEventBackend.model.User;
 import com.example.BoardGameEventBackend.service.UserService;
@@ -20,32 +22,26 @@ public class UserController {
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    public List<UserDto> getAllUsers(){
+        return UserDtoMapper.mapToUserDtos(userService.getAllUsers());
     }
 
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public User getUser(@PathVariable Long id){
-        return userService.getUser(id);
+    public UserDto getUser(@PathVariable Long id){
+        return UserDtoMapper.mapToUserDto(userService.getUser(id));
     }
 
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User saveUser(@RequestBody User user){
-        return userService.saveUser(user);
+    public UserDto saveUser(@RequestBody User user){
+        return UserDtoMapper.mapToUserDto(userService.saveUser(user));
     }
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public User updateUser(@PathVariable Long id, @Valid @RequestBody User user){
-        return userService.updateUser(id, user);
-    }
-
-    @PutMapping("/users/{id}/roles")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public User addRolesToUser(@PathVariable Long id, @Valid @RequestBody List<Role> roles){
-        return userService.addRolesToUser(id, roles);
+    public UserDto updateUser(@PathVariable Long id, @Valid @RequestBody User user){
+        return UserDtoMapper.mapToUserDto(userService.updateUser(id, user));
     }
 
     @DeleteMapping("/users/{id}")
