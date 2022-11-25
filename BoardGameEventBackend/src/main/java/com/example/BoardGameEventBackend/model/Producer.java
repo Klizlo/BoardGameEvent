@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -38,6 +39,7 @@ public class Producer {
     private LocalDate updatedAt;
 
     @OneToMany(mappedBy = "producer")
+    @ToString.Exclude
     List<BoardGame> boardGames = new ArrayList<>();
 
     public void addBoardGame(BoardGame boardGame){
@@ -46,5 +48,18 @@ public class Producer {
 
     public void removeBoardGame(BoardGame boardGame){
         boardGames.remove(boardGame);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Producer producer = (Producer) o;
+        return id.equals(producer.id) && name.equals(producer.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

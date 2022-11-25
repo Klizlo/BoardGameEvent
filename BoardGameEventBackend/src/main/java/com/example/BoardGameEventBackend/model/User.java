@@ -1,6 +1,5 @@
 package com.example.BoardGameEventBackend.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,9 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -49,6 +46,18 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "organizer")
+    @ToString.Exclude
+    private List<Event> createdEvents = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_events",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    @ToString.Exclude
+    private Set<Event> events = new HashSet<>();
+
 
     public void addRole(Role role){
         roles.add(role);
@@ -56,6 +65,22 @@ public class User {
 
     public void removeRole(Role role){
         roles.remove(role);
+    }
+
+    public void addCreatedEvent(Event event){
+        createdEvents.add(event);
+    }
+
+    public void removeCreatedEvent(Event event){
+        createdEvents.remove(event);
+    }
+
+    public void addEvent(Event event){
+        events.add(event);
+    }
+
+    public void removeEvent(Event event){
+        events.remove(event);
     }
 
     @Override
