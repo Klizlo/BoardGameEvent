@@ -4,7 +4,6 @@ import com.example.BoardGameEventBackend.dto.EventDto;
 import com.example.BoardGameEventBackend.dto.EventDtoMapper;
 import com.example.BoardGameEventBackend.dto.UserDto;
 import com.example.BoardGameEventBackend.dto.UserDtoMapper;
-import com.example.BoardGameEventBackend.model.Role;
 import com.example.BoardGameEventBackend.model.User;
 import com.example.BoardGameEventBackend.service.UserService;
 import lombok.RequiredArgsConstructor;

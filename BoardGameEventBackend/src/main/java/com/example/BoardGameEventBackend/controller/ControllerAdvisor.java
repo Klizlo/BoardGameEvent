@@ -47,8 +47,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(nameToMessages, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BoardGameNotFoundExeption.class)
-    public ResponseEntity<?> boardGameNotFoundHandler(BoardGameNotFoundExeption exception, WebRequest request){
+    @ExceptionHandler(BoardGameNotFoundException.class)
+    public ResponseEntity<?> boardGameNotFoundHandler(BoardGameNotFoundException exception, WebRequest request){
         Map<String, Object> nameToMessages = new HashMap<>();
         nameToMessages.put("timestamp", LocalDateTime.now());
         nameToMessages.put("msg", exception.getMessage());
