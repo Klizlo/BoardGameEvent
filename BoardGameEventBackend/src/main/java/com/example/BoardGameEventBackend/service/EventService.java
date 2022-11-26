@@ -1,9 +1,6 @@
 package com.example.BoardGameEventBackend.service;
 
-import com.example.BoardGameEventBackend.exception.ForbiddenException;
-import com.example.BoardGameEventBackend.exception.EventExistsException;
-import com.example.BoardGameEventBackend.exception.EventNotFoundException;
-import com.example.BoardGameEventBackend.exception.UserNotFoundException;
+import com.example.BoardGameEventBackend.exception.*;
 import com.example.BoardGameEventBackend.model.Event;
 import com.example.BoardGameEventBackend.model.User;
 import com.example.BoardGameEventBackend.repository.EventRepository;
@@ -15,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +31,7 @@ public class EventService {
         return eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException(id.toString()));
     }
 
+    @Transactional
     public Event saveGameEvent(Event event){
         if(eventRepository.existsByName(event.getName())){
             throw new EventExistsException("Name " + event.getName() + " is already taken.");
@@ -49,6 +48,7 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+    @Transactional
     public Event updateGameEvent(Long id, Event event) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -80,9 +80,14 @@ public class EventService {
         return eventRepository.findPlayersByEvent(eventId);
     }
 
+    @Transactional
     public Event addPlayerToEvent(Long gameEventId, Long userId){
         Event event = eventRepository.findById(gameEventId)
                 .orElseThrow(() -> new EventNotFoundException(gameEventId.toString()));
+
+        if(event.getPlayers().size() == event.getNumberOfPlayers()){
+            throw new EventFullException();
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));
@@ -93,6 +98,7 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+    @Transactional
     public Event removePlayerToEvent(Long eventId, Long userId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) authentication.getPrincipal();
@@ -100,13 +106,14 @@ public class EventService {
         User loggedUser = userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
 
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFoundException(eventId.toString()));
+
         if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
-                && !loggedUser.getId().equals(userId)){
+                && !loggedUser.getId().equals(userId) && !loggedUser.getId().equals(event.getOrganizer().getId())){
             throw new ForbiddenException();
         }
 
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new EventNotFoundException(eventId.toString()));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));

@@ -6,6 +6,7 @@ import com.example.BoardGameEventBackend.model.BoardGameCategory;
 import com.example.BoardGameEventBackend.repository.BoardGameCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class BoardGameCategoryService {
         return boardGameCategoryRepository.findById(id).orElseThrow(() -> new BoardGameCategoryNotFoundExeption(id.toString()));
     }
 
+    @Transactional
     public BoardGameCategory saveBoardGameCategory(BoardGameCategory boardGameCategory){
         if(boardGameCategoryRepository.existsByName(boardGameCategory.getName())){
             throw new BoardGameCategoryExistsException("Name " + boardGameCategory.getName() + " is already used.");
@@ -31,6 +33,7 @@ public class BoardGameCategoryService {
         return boardGameCategoryRepository.save(boardGameCategory);
     }
 
+    @Transactional
     public BoardGameCategory updateBoardGameCategory(Long id, BoardGameCategory boardGameCategory) {
 
         BoardGameCategory boardGameCategoryToEdit = boardGameCategoryRepository.findById(id).orElseThrow(() -> new BoardGameCategoryNotFoundExeption(id.toString()));

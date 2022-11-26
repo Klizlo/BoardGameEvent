@@ -1,5 +1,7 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.EventDto;
+import com.example.BoardGameEventBackend.dto.EventDtoMapper;
 import com.example.BoardGameEventBackend.dto.UserDto;
 import com.example.BoardGameEventBackend.dto.UserDtoMapper;
 import com.example.BoardGameEventBackend.model.Role;
@@ -40,6 +42,12 @@ public class UserController {
     @PreAuthorize("hasAuthority('USER')")
     public UserDto updateUser(@PathVariable Long id, @Valid @RequestBody User user){
         return UserDtoMapper.mapToUserDto(userService.updateUser(id, user));
+    }
+
+    @GetMapping("/users/{id}/events")
+    @PreAuthorize("hasAuthority('USER')")
+    public List<EventDto> getUserEvents(@PathVariable Long id){
+        return EventDtoMapper.mapToEventDtos(userService.getUserEvents(id));
     }
 
     @DeleteMapping("/users/{id}")

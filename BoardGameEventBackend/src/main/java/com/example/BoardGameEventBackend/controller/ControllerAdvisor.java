@@ -110,4 +110,12 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         nameToMessages.put("msg", exception.getMessage());
         return new ResponseEntity<>(nameToMessages, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EventFullException.class)
+    public ResponseEntity<?> eventFullHandler(EventFullException exception, WebRequest request){
+        Map<String, Object> nameToMessages = new HashMap<>();
+        nameToMessages.put("timestamp", LocalDateTime.now());
+        nameToMessages.put("msg", exception.getMessage());
+        return new ResponseEntity<>(nameToMessages, HttpStatus.BAD_REQUEST);
+    }
 }

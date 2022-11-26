@@ -4,10 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
 @Builder
-public class EventDto {
+@Getter
+public class EventWithPlayersDto {
 
     private Long id;
     private String name;
@@ -16,6 +17,6 @@ public class EventDto {
     private LocalDateTime date;
     private BoardGameDto boardGame;
     private UserDto organizer;
-    private int numberOfJoinedUsers;
+    private List<UserDto> players;
 
 }

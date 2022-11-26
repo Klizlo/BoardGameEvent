@@ -1,10 +1,7 @@
 package com.example.BoardGameEventBackend.controller;
 
 
-import com.example.BoardGameEventBackend.dto.EventDto;
-import com.example.BoardGameEventBackend.dto.EventDtoMapper;
-import com.example.BoardGameEventBackend.dto.UserDto;
-import com.example.BoardGameEventBackend.dto.UserDtoMapper;
+import com.example.BoardGameEventBackend.dto.*;
 import com.example.BoardGameEventBackend.model.Event;
 import com.example.BoardGameEventBackend.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +24,8 @@ public class EventController {
     }
 
     @GetMapping("/events/{id}")
-    public EventDto getGameEvent(@PathVariable Long id){
-        return EventDtoMapper.mapToEventDto(eventService.getGameEvent(id));
+    public EventWithPlayersDto getGameEvent(@PathVariable Long id){
+        return EventWithPlayersDtoMapper.mapToEventWithPlayersDto(eventService.getGameEvent(id));
     }
 
     @PostMapping("/events")

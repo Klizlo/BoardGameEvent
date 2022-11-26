@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class EventDtoMapper {
+public class EventWithPlayersDtoMapper {
 
-    public static List<EventDto> mapToEventDtos(List<Event> events){
+    public static List<EventWithPlayersDto> mapToEventWithPlayersDtos(List<Event> events){
         return events.stream()
-                .map(EventDtoMapper::mapToEventDto)
+                .map(EventWithPlayersDtoMapper::mapToEventWithPlayersDto)
                 .collect(Collectors.toList());
     }
 
-    public static EventDto mapToEventDto(Event event) {
-        return EventDto.builder()
+    public static EventWithPlayersDto mapToEventWithPlayersDto(Event event) {
+        return EventWithPlayersDto.builder()
                 .id(event.getId())
                 .name(event.getName())
                 .numberOfPlayers(event.getNumberOfPlayers())
@@ -25,7 +25,7 @@ public class EventDtoMapper {
                 .date(event.getDate())
                 .boardGame(BoardGameDtoMapper.mapToBoardGameDto(event.getBoardGame()))
                 .organizer(UserDtoMapper.mapToUserDto(event.getOrganizer()))
-                .numberOfJoinedUsers(event.getPlayers().size())
+                .players(UserDtoMapper.mapToUserDtos(event.getPlayers().stream().toList()))
                 .build();
     }
 

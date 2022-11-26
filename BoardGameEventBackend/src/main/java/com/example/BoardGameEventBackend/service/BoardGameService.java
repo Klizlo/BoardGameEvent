@@ -6,6 +6,7 @@ import com.example.BoardGameEventBackend.model.BoardGame;
 import com.example.BoardGameEventBackend.repository.BoardGameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class BoardGameService{
         return boardGameRepository.findById(id).orElseThrow(() -> new BoardGameNotFoundExeption(id.toString()));
     }
 
+    @Transactional
     public BoardGame saveBoardGame(BoardGame boardGame){
         if(boardGameRepository.existsByName(boardGame.getName())){
             throw new BoardGameExistsException("Name " + boardGame.getName() + " is already taken");
@@ -34,6 +36,7 @@ public class BoardGameService{
         return boardGameRepository.save(boardGame);
     }
 
+    @Transactional
     public BoardGame updateBoardGame(Long id, BoardGame boardGame) {
         BoardGame boardGameToEdit = boardGameRepository.findById(id).orElseThrow(() -> new BoardGameNotFoundExeption(id.toString()));
 
