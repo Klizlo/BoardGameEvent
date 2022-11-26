@@ -1,7 +1,7 @@
 package com.example.BoardGameEventBackend.service;
 
 import com.example.BoardGameEventBackend.exception.BoardGameExistsException;
-import com.example.BoardGameEventBackend.exception.BoardGameNotFoundExeption;
+import com.example.BoardGameEventBackend.exception.BoardGameNotFoundException;
 import com.example.BoardGameEventBackend.model.BoardGame;
 import com.example.BoardGameEventBackend.repository.BoardGameRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class BoardGameService{
     }
 
     public BoardGame getBoardGame(Long id){
-        return boardGameRepository.findById(id).orElseThrow(() -> new BoardGameNotFoundExeption(id.toString()));
+        return boardGameRepository.findById(id).orElseThrow(() -> new BoardGameNotFoundException(id.toString()));
     }
 
     @Transactional
@@ -38,7 +38,7 @@ public class BoardGameService{
 
     @Transactional
     public BoardGame updateBoardGame(Long id, BoardGame boardGame) {
-        BoardGame boardGameToEdit = boardGameRepository.findById(id).orElseThrow(() -> new BoardGameNotFoundExeption(id.toString()));
+        BoardGame boardGameToEdit = boardGameRepository.findById(id).orElseThrow(() -> new BoardGameNotFoundException(id.toString()));
 
         if(boardGameRepository.existsByName(boardGame.getName())){
             throw new BoardGameExistsException("Name " + boardGame.getName() + " is already used.");
