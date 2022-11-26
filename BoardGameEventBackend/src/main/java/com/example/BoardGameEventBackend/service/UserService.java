@@ -2,6 +2,7 @@ package com.example.BoardGameEventBackend.service;
 
 import com.example.BoardGameEventBackend.exception.ForbiddenException;
 import com.example.BoardGameEventBackend.exception.UserNotFoundException;
+import com.example.BoardGameEventBackend.model.Event;
 import com.example.BoardGameEventBackend.model.Role;
 import com.example.BoardGameEventBackend.model.User;
 import com.example.BoardGameEventBackend.exception.UserExistsException;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,6 +50,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    @Transactional
     public User saveUser(User user) throws UserExistsException {
 
         if(userRepository.existsByUsername(user.getUsername())){
@@ -70,6 +73,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public User updateUser(Long id, User user) throws ForbiddenException, UserExistsException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -102,6 +106,10 @@ public class UserService implements UserDetailsService {
         userToEdit.setRoles(user.getRoles());
 
         return userRepository.save(userToEdit);
+    }
+
+    public List<Event> getUserEvents(Long id){
+        return userRepository.findEventsByUser(id);
     }
 
     public void delete(Long id) throws ForbiddenException {

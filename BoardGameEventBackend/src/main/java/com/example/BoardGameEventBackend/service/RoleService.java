@@ -6,6 +6,7 @@ import com.example.BoardGameEventBackend.model.Role;
 import com.example.BoardGameEventBackend.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class RoleService {
         return roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id.toString()));
     }
 
+    @Transactional
     public Role addRole(Role role) {
 
         if(roleRepository.existsByName(role.getName())){
@@ -32,6 +34,7 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
+    @Transactional
     public Role updateRole(Long id, Role role) {
         Role roleToUpdate = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id.toString()));
 

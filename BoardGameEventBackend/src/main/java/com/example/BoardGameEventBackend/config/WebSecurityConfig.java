@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/producers/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/boardGames/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/boardGameCategories/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/events/**").permitAll();
         http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();
     }

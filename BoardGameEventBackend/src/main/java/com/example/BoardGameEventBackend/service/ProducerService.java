@@ -6,6 +6,7 @@ import com.example.BoardGameEventBackend.model.Producer;
 import com.example.BoardGameEventBackend.repository.ProducerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ProducerService {
         return producerRepository.findById(id).orElseThrow(() -> new ProducerNotFoundExeption(id.toString()));
     }
 
+    @Transactional
     public Producer saveProducer(Producer producer){
         if(producerRepository.existsByName(producer.getName())){
             throw new ProducerExistsException("Name " + producer.getName() + " is already used.");
@@ -31,6 +33,7 @@ public class ProducerService {
         return producerRepository.save(producer);
     }
 
+    @Transactional
     public Producer updateProducer(Long id, Producer producer) {
 
         Producer producerToEdit = producerRepository.findById(id).orElseThrow(() -> new ProducerNotFoundExeption(id.toString()));
