@@ -48,7 +48,7 @@ public class Event {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardgame_id")
+    @JoinColumn(name = "board_game_id")
     BoardGame boardGame;
 
     @ManyToOne(fetch = FetchType.EAGER)

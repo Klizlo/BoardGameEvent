@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "boardgame")
+@Table(name = "board_game")
 @EntityListeners(AuditingEntityListener.class)
 @ToString
 public class BoardGame {
@@ -54,7 +54,7 @@ public class BoardGame {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardgamecategory_id", nullable = false)
+    @JoinColumn(name = "board_game_category_id", nullable = false)
     @NotNull
     private BoardGameCategory boardGameCategory;
 

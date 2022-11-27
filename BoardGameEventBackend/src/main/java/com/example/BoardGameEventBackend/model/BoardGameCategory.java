@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "boardgamecategory")
+@Table(name = "board_game_category")
 @EntityListeners(AuditingEntityListener.class)
 @ToString
 public class BoardGameCategory {
