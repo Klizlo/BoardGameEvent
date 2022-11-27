@@ -51,17 +51,6 @@ public class EventService {
     @Transactional
     public Event updateGameEvent(Long id, Event event) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-
-        User loggedUser = userRepository.findByUsername(principal.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
-
-        if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
-                && !loggedUser.getId().equals(id)){
-            throw new ForbiddenException();
-        }
-
         Event eventToEdit = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException(id.toString()));
 
         if(eventRepository.existsByName(event.getName())){
@@ -100,20 +89,8 @@ public class EventService {
 
     @Transactional
     public Event removePlayerToEvent(Long eventId, Long userId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-
-        User loggedUser = userRepository.findByUsername(principal.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
-
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId.toString()));
-
-        if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
-                && !loggedUser.getId().equals(userId) && !loggedUser.getId().equals(event.getOrganizer().getId())){
-            throw new ForbiddenException();
-        }
-
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));
