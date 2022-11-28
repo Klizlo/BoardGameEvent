@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "boardgamecategory")
+@Table(name = "board_game_category")
 @EntityListeners(AuditingEntityListener.class)
 @ToString
 public class BoardGameCategory {
@@ -31,10 +31,11 @@ public class BoardGameCategory {
     private String name;
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDate createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     private LocalDate updatedAt;
 
     @OneToMany(mappedBy = "boardGameCategory")

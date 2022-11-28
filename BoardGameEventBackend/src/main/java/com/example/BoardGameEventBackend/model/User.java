@@ -35,9 +35,10 @@ public class User {
     @NotNull
     String password;
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     LocalDate createdAt;
     @LastModifiedDate
+    @Column(name = "updated_at")
     LocalDate updatedAt;
 
     @ManyToMany(fetch = FetchType.EAGER)

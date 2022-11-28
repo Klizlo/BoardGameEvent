@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "boardgame")
+@Table(name = "board_game")
 @EntityListeners(AuditingEntityListener.class)
 @ToString
 public class BoardGame {
@@ -33,28 +33,29 @@ public class BoardGame {
     @NotNull
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "min_number_of_players", nullable = false)
     @Min(1)
     private int minNumberOfPlayers;
 
-    @Column(nullable = false)
+    @Column(name = "max_number_of_players", nullable = false)
     @Max(6)
     private int maxNumberOfPlayers;
 
-    @Column(nullable = false)
+    @Column(name = "age_restriction", nullable = false)
     @Convert(converter = AgeRestrictionConverter.class)
     @NotNull
     private AgeRestriction ageRestriction;
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardgamecategory_id", nullable = false)
+    @JoinColumn(name = "board_game_category_id", nullable = false)
     @NotNull
     private BoardGameCategory boardGameCategory;
 
