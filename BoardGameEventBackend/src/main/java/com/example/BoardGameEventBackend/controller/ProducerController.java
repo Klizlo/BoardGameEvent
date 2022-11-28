@@ -5,6 +5,7 @@ import com.example.BoardGameEventBackend.dto.ProducerDtoMapper;
 import com.example.BoardGameEventBackend.model.Producer;
 import com.example.BoardGameEventBackend.service.ProducerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class ProducerController {
 
     @PostMapping("/producers")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public ProducerDto saveProducer(@Valid @RequestBody Producer producer){
         return ProducerDtoMapper.mapToProducerDto(producerService.saveProducer(producer));
     }

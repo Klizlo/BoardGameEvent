@@ -13,6 +13,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     boolean existsByName(String name);
 
-    @Query("select players from Event e where e.id = ?1")
+    @Query("select e.players from Event e where e.id = ?1")
     List<User> findPlayersByEvent(Long id);
 }

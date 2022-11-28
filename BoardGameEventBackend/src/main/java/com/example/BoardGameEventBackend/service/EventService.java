@@ -7,7 +7,6 @@ import com.example.BoardGameEventBackend.repository.EventRepository;
 import com.example.BoardGameEventBackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,16 +22,16 @@ public class EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
-    public List<Event> getAllGameEvents(){
+    public List<Event> getAllEvents(){
         return eventRepository.findAll();
     }
 
-    public Event getGameEvent(Long id){
+    public Event getEvent(Long id){
         return eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException(id.toString()));
     }
 
     @Transactional
-    public Event saveGameEvent(Event event){
+    public Event saveEvent(Event event){
         if(eventRepository.existsByName(event.getName())){
             throw new EventExistsException("Name " + event.getName() + " is already taken.");
         }
@@ -49,12 +48,12 @@ public class EventService {
     }
 
     @Transactional
-    public Event updateGameEvent(Long id, Event event) {
+    public Event updateEvent(Long id, Event event) {
 
         Event eventToEdit = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException(id.toString()));
 
         if(eventRepository.existsByName(event.getName())){
-            throw new EventExistsException("Name " + event.getName() + " is already used.");
+            throw new EventExistsException("Name " + event.getName() + " is already taken.");
         }
 
         eventToEdit.setName(event.getName());
@@ -70,7 +69,7 @@ public class EventService {
     }
 
     @Transactional
-    public Event addPlayerToEvent(Long gameEventId, Long userId){
+    public Event addPlayerToEvent(Long gameEventId, User user){
         Event event = eventRepository.findById(gameEventId)
                 .orElseThrow(() -> new EventNotFoundException(gameEventId.toString()));
 
@@ -78,11 +77,11 @@ public class EventService {
             throw new EventFullException();
         }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
+        User foundUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserNotFoundException(user.getId().toString()));
 
-        user.addEvent(event);
-        event.addPlayer(user);
+        foundUser.addEvent(event);
+        event.addPlayer(foundUser);
 
         return eventRepository.save(event);
     }

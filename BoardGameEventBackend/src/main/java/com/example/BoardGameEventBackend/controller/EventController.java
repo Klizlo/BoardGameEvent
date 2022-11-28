@@ -2,19 +2,18 @@ package com.example.BoardGameEventBackend.controller;
 
 
 import com.example.BoardGameEventBackend.dto.*;
-import com.example.BoardGameEventBackend.exception.EventNotFoundException;
 import com.example.BoardGameEventBackend.exception.ForbiddenException;
 import com.example.BoardGameEventBackend.model.Event;
 import com.example.BoardGameEventBackend.model.User;
 import com.example.BoardGameEventBackend.service.EventService;
 import com.example.BoardGameEventBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,22 +29,23 @@ public class EventController {
 
     @GetMapping("/events")
     public List<EventDto> getAllGameEvents(){
-        return EventDtoMapper.mapToEventDtos(eventService.getAllGameEvents());
+        return EventDtoMapper.mapToEventDtos(eventService.getAllEvents());
     }
 
     @GetMapping("/events/{id}")
     public EventWithPlayersDto getGameEvent(@PathVariable Long id){
-        return EventWithPlayersDtoMapper.mapToEventWithPlayersDto(eventService.getGameEvent(id));
+        return EventWithPlayersDtoMapper.mapToEventWithPlayersDto(eventService.getEvent(id));
     }
 
     @PostMapping("/events")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER')")
+    @ResponseStatus(HttpStatus.CREATED)
     public EventDto saveGameEvent(@Valid @RequestBody Event event){
-        return EventDtoMapper.mapToEventDto(eventService.saveGameEvent(event));
+        return EventDtoMapper.mapToEventDto(eventService.saveEvent(event));
     }
 
     @PutMapping("/events/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER')")
     public EventDto updateGameEvent(@PathVariable Long id, @Valid @RequestBody Event event){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) authentication.getPrincipal();
@@ -57,7 +57,7 @@ public class EventController {
             throw new ForbiddenException();
         }
 
-        return EventDtoMapper.mapToEventDto(eventService.updateGameEvent(id, event));
+        return EventDtoMapper.mapToEventDto(eventService.updateEvent(id, event));
     }
 
     @GetMapping("/events/{eventId}/players")
@@ -66,10 +66,10 @@ public class EventController {
         return UserDtoMapper.mapToUserDtos(eventService.getEventPlayers(eventId));
     }
 
-    @PostMapping("/events/{eventId}/players/{userId}")
+    @PostMapping("/events/{eventId}/players")
     @PreAuthorize("hasAuthority('USER')")
-    public EventDto addPlayerToEvent(@PathVariable("eventId") Long eventId, @PathVariable("userId") Long userId){
-        return EventDtoMapper.mapToEventDto(eventService.addPlayerToEvent(eventId, userId));
+    public EventDto addPlayerToEvent(@PathVariable("eventId") Long eventId, @RequestBody User user){
+        return EventDtoMapper.mapToEventDto(eventService.addPlayerToEvent(eventId, user));
     }
 
     @DeleteMapping("/events/{eventId}/players/{userId}")
@@ -80,7 +80,7 @@ public class EventController {
 
         User loggedUser = userService.findByUsername(principal.getUsername());
 
-        Event event = eventService.getGameEvent(eventId);
+        Event event = eventService.getEvent(eventId);
 
         if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
                 && !loggedUser.getId().equals(userId) && !loggedUser.getId().equals(event.getOrganizer().getId())){
