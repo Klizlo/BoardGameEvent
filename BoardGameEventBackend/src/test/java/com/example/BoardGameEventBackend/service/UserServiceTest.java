@@ -6,14 +6,14 @@ import com.example.BoardGameEventBackend.model.User;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@PropertySource("application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceTest {
 
@@ -31,7 +31,7 @@ public class UserServiceTest {
         userService.saveUser(user);
 
         List<User> allUsers = userService.getAllUsers();
-        assertFalse(allUsers.isEmpty());
+        assertFalse(allUsers.isEmpty(), "User lists should not be empty");
     }
 
     @Test
@@ -90,7 +90,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Delete user")
     @Order(5)
-    void givenStudent_whenRemoveUser_givenException(){
+    void givenStudent_whenRemoveUser_returnException(){
         User user = new User();
         user.setUsername("User5");
         user.setEmail("user5@user.com");

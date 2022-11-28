@@ -3,7 +3,7 @@
 
 create table users (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  username varchar(16) not null,
+  username varchar(50) not null,
   email varchar(255) not null,
   password varchar(255) not null,
   created_at timestamp default current_timestamp,
