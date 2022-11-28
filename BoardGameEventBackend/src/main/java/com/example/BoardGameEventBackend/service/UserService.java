@@ -37,17 +37,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUser(Long id) throws ForbiddenException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
+    }
 
-        User user = userRepository.findByUsername(principal.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
-
-        if (authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(authority -> authority.contains("ADMIN")) && !id.equals(user.getId())){
-            throw new ForbiddenException();
-        }
-
-        return user;
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     @Transactional
@@ -76,18 +71,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User updateUser(Long id, User user) throws ForbiddenException, UserExistsException {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-
-        User loggedUser = userRepository.findByUsername(principal.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
-
         User userToEdit = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
-
-        if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
-                && !loggedUser.getId().equals(id)){
-            throw new ForbiddenException();
-        }
 
         if(userRepository.existsByUsername(user.getUsername()) && !user.getUsername().equals(userToEdit.getUsername())){
             throw new UserExistsException("Username " + user.getUsername() + " is already taken");
@@ -113,18 +97,6 @@ public class UserService implements UserDetailsService {
     }
 
     public void delete(Long id) throws ForbiddenException {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-
-        User loggedUser = userRepository.findByUsername(principal.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
-
-        if(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).noneMatch(role -> role.contains("ADMIN"))
-                && !loggedUser.getId().equals(id)){
-            throw new ForbiddenException();
-        }
-
         userRepository.deleteById(id);
     }
 

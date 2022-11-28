@@ -4,7 +4,7 @@
 create table `event`
 (
     id bigint auto_increment primary key,
-    name varchar(20) not null,
+    name varchar(50) not null,
     number_of_players int not null,
     description text null,
     created_at timestamp default current_timestamp,

@@ -30,9 +30,6 @@ public class BoardGameService{
             throw new BoardGameExistsException("Name " + boardGame.getName() + " is already taken");
         }
 
-        boardGame.getBoardGameCategory().addBoardGame(boardGame);
-        boardGame.getProducer().addBoardGame(boardGame);
-
         return boardGameRepository.save(boardGame);
     }
 

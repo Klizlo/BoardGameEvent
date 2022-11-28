@@ -4,7 +4,7 @@
 create table board_game
 (
     id bigint auto_increment primary key,
-    name varchar(20) not null,
+    name varchar(50) not null,
     min_number_of_players int not null,
     max_number_of_players int not null,
     age_restriction enum ('+7', '+14', '+18') not null,
