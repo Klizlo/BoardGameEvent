@@ -30,7 +30,7 @@ class BoardGameServiceTest {
     @Test
     @DisplayName("Get all board games")
     @Order(1)
-    void givenBoardGame_whenGetBoardGames_returnNotEmptyList() {
+    void whenGetBoardGames_returnNotEmptyList() {
         List<BoardGame> boardGames = boardGameService.getAllBoardGames();
         assertFalse(boardGames.isEmpty(), "Board game list should not be empty");
     }

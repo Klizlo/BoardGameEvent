@@ -5,6 +5,7 @@ import com.example.BoardGameEventBackend.dto.BoardGameCategoryDtoMapper;
 import com.example.BoardGameEventBackend.model.BoardGameCategory;
 import com.example.BoardGameEventBackend.service.BoardGameCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class BoardGameCategoryController {
 
     @PostMapping("/boardGameCategories")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public BoardGameCategoryDto saveBoardGameCategory(@Valid @RequestBody BoardGameCategory boardGameCategory){
         return BoardGameCategoryDtoMapper
                 .mapToBoardGameCategoryDto(boardGameCategoryService.saveBoardGameCategory(boardGameCategory));

@@ -8,6 +8,7 @@ import com.example.BoardGameEventBackend.exception.ForbiddenException;
 import com.example.BoardGameEventBackend.model.User;
 import com.example.BoardGameEventBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,7 @@ public class UserController {
 
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public UserDto saveUser(@RequestBody User user){
         return UserDtoMapper.mapToUserDto(userService.saveUser(user));
     }

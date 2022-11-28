@@ -5,6 +5,7 @@ import com.example.BoardGameEventBackend.dto.RoleDtoMapper;
 import com.example.BoardGameEventBackend.model.Role;
 import com.example.BoardGameEventBackend.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,7 @@ public class RoleController {
 
     @PostMapping("/roles")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public RoleDto addRole(@Valid @RequestBody Role role){
         return RoleDtoMapper.mapToRoleDto(roleService.addRole(role));
     }

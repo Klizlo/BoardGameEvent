@@ -5,6 +5,7 @@ import com.example.BoardGameEventBackend.dto.BoardGameDtoMapper;
 import com.example.BoardGameEventBackend.model.BoardGame;
 import com.example.BoardGameEventBackend.service.BoardGameService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class BoardGameController {
 
     @PostMapping("/boardGames")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public BoardGameDto saveBoardGame(@Valid @RequestBody BoardGame boardGame){
         return BoardGameDtoMapper.mapToBoardGameDto(boardGameService.saveBoardGame(boardGame));
     }
