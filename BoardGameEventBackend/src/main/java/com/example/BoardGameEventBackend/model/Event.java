@@ -31,7 +31,7 @@ public class Event {
     @NotNull
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "number_of_players", nullable = false)
     @Min(1)
     private int numberOfPlayers;
 
@@ -41,10 +41,11 @@ public class Event {
     private LocalDateTime date;
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)

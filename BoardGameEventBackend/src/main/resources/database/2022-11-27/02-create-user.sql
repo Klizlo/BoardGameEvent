@@ -6,8 +6,8 @@ create table users (
   username varchar(16) not null,
   email varchar(255) not null,
   password varchar(255) not null,
-  createdAt datetime null,
-  updatedAt datetime null,
+  created_at timestamp default current_timestamp,
+  updated_at datetime default current_timestamp on update current_timestamp,
   constraint UC_user_name unique (username),
   constraint UC_user_email unique (email)
 );

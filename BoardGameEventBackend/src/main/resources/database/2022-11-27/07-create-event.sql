@@ -5,10 +5,10 @@ create table `event`
 (
     id bigint auto_increment primary key,
     name varchar(20) not null,
-    numberOfPlayers int not null,
+    number_of_players int not null,
     description text null,
-    createdAt datetime null,
-    updatedAt datetime null,
+    created_at timestamp default current_timestamp,
+    updated_at datetime default current_timestamp on update current_timestamp,
     board_game_id bigint not null,
     organizer_id bigint not null,
     date datetime(6) not null,

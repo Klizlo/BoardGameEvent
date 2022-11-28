@@ -5,11 +5,11 @@ create table board_game
 (
     id bigint auto_increment primary key,
     name varchar(20) not null,
-    minNumberOfPlayers int not null,
-    maxNumberOfPlayers int not null,
-    ageRestriction enum ('+7', '+14', '+18') not null,
-    createdAt datetime null,
-    updatedAt datetime null,
+    min_number_of_players int not null,
+    max_number_of_players int not null,
+    age_restriction enum ('+7', '+14', '+18') not null,
+    created_at timestamp default current_timestamp,
+      updated_at datetime default current_timestamp on update current_timestamp,
     board_game_category_id bigint not null,
     producer_id bigint not null,
     constraint boardGame_pk
