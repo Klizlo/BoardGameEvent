@@ -157,7 +157,7 @@ public class EventControllerTest {
     @Order(6)
     public void givenUser_whenAddPlayerToEvent_returnStatus200() throws Exception {
         Event event = createEvent("Sword and Dice", 2, LocalDateTime.of(2018, 8, 19, 10, 15),
-                getBoardGame(4L), getUser("Adam", "Newby", "Adam_New"));
+                getBoardGame(4L), getUser("Thomas", "Newby", "Adam_New"));
         User user = getUser("Mike", "Wheeler", "Eleven");
 
         mockMvc.perform(post("/api/events/" + event.getId() + "/players")
