@@ -59,7 +59,6 @@ public class EventControllerTest {
         Event event = createEvent("Roll the dice", 5, LocalDateTime.of(2022, 9, 5, 10, 15),
                 getBoardGame(2L), getUser("Adam", "Malcolm", "User1234"));
 
-        eventRepository.save(event);
 
         MvcResult mvcResult = mockMvc.perform(get("/api/events")
                         .contentType(MediaType.APPLICATION_JSON))
