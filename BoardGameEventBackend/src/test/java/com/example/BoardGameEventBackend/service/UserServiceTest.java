@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @Import({TestConfig.class})
-@TestPropertySource(locations = "classpath:application-test.properties")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceTest {
 
@@ -48,8 +46,9 @@ public class UserServiceTest {
     @DisplayName("Get all users")
     @Order(1)
     public void givenUser_whenGetUsers_returnNotEmptyList(){
-
+        // Role
         when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
         when(userRepository.save(any(User.class))).thenReturn(new User());
         when(userRepository.findAll()).thenReturn(List.of(new User()));
         User user = new User();
@@ -66,7 +65,9 @@ public class UserServiceTest {
     @DisplayName("Save user to database")
     @Order(2)
     public void givenUser_whenAddUser_ReturnUser(){
+        // Role
         when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
         when(userRepository.save(any(User.class))).thenReturn(new User());
         User user = new User();
         user.setUsername("User1");
@@ -74,6 +75,7 @@ public class UserServiceTest {
         user.setPassword("User1234");
 
         User savedUser = userService.saveUser(user);
+
         assertNotNull(savedUser, "User should not be null");
     }
 
@@ -81,7 +83,9 @@ public class UserServiceTest {
     @DisplayName("Update user in database")
     @Order(3)
     public void givenUser_whenUpdateUser_ReturnUser(){
+        // Role
         when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
@@ -94,14 +98,18 @@ public class UserServiceTest {
 
         savedUser.setUsername("newUsername");
         User editedUser = userService.updateUser(getRandomLong(), savedUser);
+
         assertNotNull(editedUser, "User should not be null");
+        assertEquals("newUsername", editedUser.getUsername());
     }
 
     @Test
     @DisplayName("Update user with existing username in database")
     @Order(4)
     public void givenUser_whenUpdateUser_ReturnException(){
+        // Role
         when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
@@ -125,7 +133,7 @@ public class UserServiceTest {
         savedUser.setUsername("User3");
         UserExistsException exception = assertThrows(UserExistsException.class,
                 () -> userService.updateUser(getRandomLong(), savedUser));
-        assertEquals("Username User3 is already taken", exception.getMessage());
+        assertEquals("Username " + user.getUsername() + " is already taken", exception.getMessage());
     }
 
     @Test
@@ -133,8 +141,11 @@ public class UserServiceTest {
     @Order(5)
     public void givenStudent_whenRemoveUser_returnException(){
 
+        //Role
         when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        //User
         when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         User user = new User();
         user.setUsername("User5");
@@ -142,9 +153,7 @@ public class UserServiceTest {
         user.setPassword("User1234");
         Long id = getRandomLong();
 
-        when(userRepository.findById(anyLong())).thenThrow(new UserNotFoundException(id.toString()));
-
-        User savedUser = userService.saveUser(user);
+        userService.saveUser(user);
 
         userService.delete(id);
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.getUser(id));
