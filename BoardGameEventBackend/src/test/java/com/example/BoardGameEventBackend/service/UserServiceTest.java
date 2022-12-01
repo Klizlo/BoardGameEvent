@@ -1,29 +1,56 @@
 package com.example.BoardGameEventBackend.service;
 
+import com.example.BoardGameEventBackend.config.TestConfig;
 import com.example.BoardGameEventBackend.exception.UserExistsException;
 import com.example.BoardGameEventBackend.exception.UserNotFoundException;
+import com.example.BoardGameEventBackend.model.Role;
 import com.example.BoardGameEventBackend.model.User;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
+import com.example.BoardGameEventBackend.repository.RoleRepository;
+import com.example.BoardGameEventBackend.repository.UserRepository;
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
+
+@RunWith(MockitoJUnitRunner.class)
+@Import({TestConfig.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceTest {
 
-    @Autowired
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private RoleRepository roleRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+    @InjectMocks
     private UserService userService;
 
     @Test
     @DisplayName("Get all users")
     @Order(1)
-    void givenUser_whenGetUsers_returnNotEmptyList(){
+    public void givenUser_whenGetUsers_returnNotEmptyList(){
+        // Role
+        when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userRepository.findAll()).thenReturn(List.of(new User()));
         User user = new User();
         user.setUsername("User");
         user.setEmail("user@user.com");
@@ -37,20 +64,31 @@ public class UserServiceTest {
     @Test
     @DisplayName("Save user to database")
     @Order(2)
-    void givenUser_whenAddUser_ReturnUser(){
+    public void givenUser_whenAddUser_ReturnUser(){
+        // Role
+        when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
+        when(userRepository.save(any(User.class))).thenReturn(new User());
         User user = new User();
         user.setUsername("User1");
         user.setEmail("user1@user.com");
         user.setPassword("User1234");
 
         User savedUser = userService.saveUser(user);
+
         assertNotNull(savedUser, "User should not be null");
     }
 
     @Test
     @DisplayName("Update user in database")
     @Order(3)
-    void givenUser_whenUpdateUser_ReturnUser(){
+    public void givenUser_whenUpdateUser_ReturnUser(){
+        // Role
+        when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+
         User user = new User();
         user.setUsername("User2");
         user.setEmail("user2@user.com");
@@ -59,14 +97,22 @@ public class UserServiceTest {
         User savedUser = userService.saveUser(user);
 
         savedUser.setUsername("newUsername");
-        User editedUser = userService.updateUser(savedUser.getId(), savedUser);
+        User editedUser = userService.updateUser(getRandomLong(), savedUser);
+
         assertNotNull(editedUser, "User should not be null");
+        assertEquals("newUsername", editedUser.getUsername());
     }
 
     @Test
     @DisplayName("Update user with existing username in database")
     @Order(4)
-    void givenUser_whenUpdateUser_ReturnException(){
+    public void givenUser_whenUpdateUser_ReturnException(){
+        // Role
+        when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        // User
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+
         User user = new User();
         user.setUsername("User3");
         user.setEmail("user3@user.com");
@@ -81,27 +127,42 @@ public class UserServiceTest {
 
         User savedUser = userService.saveUser(user2);
 
+        when(userRepository.save(any(User.class)))
+                .thenThrow(new UserExistsException("Username " + user.getUsername() + " is already taken"));
+
         savedUser.setUsername("User3");
         UserExistsException exception = assertThrows(UserExistsException.class,
-                () -> userService.updateUser(savedUser.getId(), savedUser));
-        assertEquals("Username User3 is already taken", exception.getMessage());
+                () -> userService.updateUser(getRandomLong(), savedUser));
+        assertEquals("Username " + user.getUsername() + " is already taken", exception.getMessage());
     }
 
     @Test
     @DisplayName("Delete user")
     @Order(5)
-    void givenStudent_whenRemoveUser_returnException(){
+    public void givenStudent_whenRemoveUser_returnException(){
+
+        //Role
+        when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        //User
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
         User user = new User();
         user.setUsername("User5");
         user.setEmail("user5@user.com");
         user.setPassword("User1234");
+        Long id = getRandomLong();
 
-        User savedUser = userService.saveUser(user);
+        userService.saveUser(user);
 
-        userService.delete(user.getId());
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.getUser(savedUser.getId()));
-        assertEquals("User " + savedUser.getId() + " not found", exception.getMessage());
+        userService.delete(id);
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.getUser(id));
+        assertEquals("User " + id + " not found", exception.getMessage());
 
+    }
+
+    private Long getRandomLong() {
+        return (long) new Random().ints(1, 10).findFirst().getAsInt();
     }
 
 }
