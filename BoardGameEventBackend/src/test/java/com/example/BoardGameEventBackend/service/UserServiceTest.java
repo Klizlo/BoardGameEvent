@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
@@ -120,6 +119,9 @@ public class UserServiceTest {
 
         User savedUser = userService.saveUser(user2);
 
+        when(userRepository.save(any(User.class)))
+                .thenThrow(new UserExistsException("Username " + user.getUsername() + " is already taken"));
+
         savedUser.setUsername("User3");
         UserExistsException exception = assertThrows(UserExistsException.class,
                 () -> userService.updateUser(getRandomLong(), savedUser));
@@ -130,16 +132,23 @@ public class UserServiceTest {
     @DisplayName("Delete user")
     @Order(5)
     public void givenStudent_whenRemoveUser_returnException(){
+
+        when(roleRepository.save(any(Role.class))).thenReturn(new Role());
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+
         User user = new User();
         user.setUsername("User5");
         user.setEmail("user5@user.com");
         user.setPassword("User1234");
+        Long id = getRandomLong();
+
+        when(userRepository.findById(anyLong())).thenThrow(new UserNotFoundException(id.toString()));
 
         User savedUser = userService.saveUser(user);
 
-        userService.delete(user.getId());
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.getUser(savedUser.getId()));
-        assertEquals("User " + savedUser.getId() + " not found", exception.getMessage());
+        userService.delete(id);
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.getUser(id));
+        assertEquals("User " + id + " not found", exception.getMessage());
 
     }
 
