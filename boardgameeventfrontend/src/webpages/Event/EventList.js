@@ -1,15 +1,14 @@
 import {useEffect, useState} from "react";
-import Variables from "../components/Globals/Variables";
+import Variables from "../../components/Globals/Variables";
 import Box from "@mui/material/Box";
 import {Grid, Typography} from "@mui/material";
-import BoardGamesTable from "../components/Tables/BoardGamesTable";
+import BoardGameListTable from "../../components/Tables/BoardGameListTable";
 
-const BoardGames = () => {
-
+const EventList = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [boardGames, setBoardGames] = useState([]);
-    const endpoint = Variables.API + '/boardGames';
+    const [eventList, setEventList] = useState([]);
+    const endpoint = Variables.API + '/events';
     useEffect(() => {
         fetch(endpoint, {
             method: 'GET',
@@ -18,7 +17,7 @@ const BoardGames = () => {
             .then(
                 (data) => {
                     setIsLoaded(true);
-                    setBoardGames(data);
+                    setEventList(data);
                     console.log(data);
                 },
                 (error) => {
@@ -57,13 +56,13 @@ const BoardGames = () => {
                     width={'100%'}
                 >
                     <Typography sx={{fontSize: 35, fontWeight: 'bold'}} color={"text.secondary"} gutterBottom>
-                        Board Games
+                        EventList
                     </Typography>
-                    <BoardGamesTable BoardGamesData={boardGames}/>
+                    <BoardGameListTable BoardGamesData={eventList}/>
                 </Grid>
             </Box>
         );
     }
 }
 
-export default BoardGames;
+export default EventList;

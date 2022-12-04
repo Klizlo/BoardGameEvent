@@ -3,8 +3,9 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import NavBar from "../components/navBar";
-import BoardGames from "./BoardGames";
+import NavBar from "../components/Navigation/NavBar";
+import BoardGameList from "./BoardGame/BoardGameList";
+import EventList from "./Event/EventList";
 
 const WebPages = () => {
     const sites = [
@@ -14,18 +15,13 @@ const WebPages = () => {
             visible: true,
         },
         {
-            name: "Board Games Rooms",
-            link: "/rooms",
+            name: "Event list",
+            link: "/eventList",
             visible: true,
         },
         {
             name: "Create Room",
-            link: "/createRoom",
-            visible: false,
-        },
-        {
-            name: "Administration",
-            link: "/admin",
+            link: "/createEvent",
             visible: false,
         },
     ];
@@ -36,7 +32,19 @@ const WebPages = () => {
             <Routes>
                 <Route
                     path="/boardGames"
-                    element={<BoardGames/>}
+                    element={<BoardGameList/>}
+                />
+                <Route
+                    path="/boardGames/{id}"
+                    element={<BoardGameList/>}
+                />
+                <Route
+                    path="/createEvent"
+                    element={<BoardGameList/>}
+                />
+                <Route
+                    path="/eventList"
+                    element={<EventList/>}
                 />
             </Routes>
         </Router>

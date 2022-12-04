@@ -47,7 +47,7 @@ let columns = [
     }
 ];
 
-const BoardGamesTable = BoardGamesData => {
+const BoardGameListTable = BoardGamesData => {
     const [gamesWithProducer, setGamesWithProdcuer] = useState([]);
     useEffect(() => {
         const temp = [];
@@ -81,4 +81,4 @@ const BoardGamesTable = BoardGamesData => {
     );
 }
 
-export default BoardGamesTable;
+export default BoardGameListTable;
