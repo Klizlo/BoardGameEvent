@@ -3,6 +3,8 @@ import {
     Routes,
     Route
 } from "react-router-dom";
+import { Guard } from "../components/Guard";
+import { Role } from "../helpers/role";
 import NavBar from "../components/Navigation/NavBar";
 import BoardGameList from "./BoardGame/BoardGameList";
 import EventList from "./Event/EventList";
@@ -30,10 +32,8 @@ const WebPages = () => {
         <Router>
             <NavBar sites={sites}/>
             <Routes>
-                <Route
-                    path="/boardGames"
-                    element={<BoardGameList/>}
-                />
+                <Route path='/boardGames' element={<Guard component={<BoardGameList/>} roles={[Role.Admin]} />}/>
+                <Route path='/login' />
                 <Route
                     path="/boardGames/{id}"
                     element={<BoardGameList/>}

@@ -35,7 +35,11 @@ public class AuthController {
                 ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateJwtToken(authentication);
-        return ResponseEntity.ok().body(new HashMap<>(Map.of("token", token)));
+        User loggedUser = userService.findByUsername(loginCredentials.getUsername());
+        return ResponseEntity.ok().body(new HashMap<>(Map.of(
+                "user", loggedUser,
+                "token", token
+        )));
     }
 
     @PostMapping("/register")
@@ -45,7 +49,7 @@ public class AuthController {
         user.setEmail(registrationCredentials.getEmail());
         user.setPassword(registrationCredentials.getPassword());
 
-        userService.saveUser(user);
+        User loggedUser = userService.saveUser(user);
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(registrationCredentials.getUsername(), registrationCredentials.getPassword())
@@ -53,7 +57,10 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateJwtToken(authentication);
-        return ResponseEntity.ok().body(new HashMap<>(Map.of("token", token)));
+        return ResponseEntity.ok().body(new HashMap<>(Map.of(
+                "user", loggedUser,
+                "token", token
+        )));
     }
 
 }
