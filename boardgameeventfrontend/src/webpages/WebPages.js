@@ -10,6 +10,7 @@ import BoardGameList from "./BoardGame/BoardGameList";
 import EventList from "./Event/EventList";
 import LoginPage from "./Account/LogIn";
 import RegisterPage from "./Account/Register";
+import BoardGame from "./BoardGame/BoardGame";
 
 const WebPages = () => {
     const sites = [
@@ -38,7 +39,7 @@ const WebPages = () => {
                 <Route path='/login' element={<LoginPage />}/>
                 <Route path='/register' element={<RegisterPage />} />
                 <Route path='/boardGames/add' element={<Guard component={<BoardGameList/>} roles={[Role.Admin]} />} />
-                <Route path="/boardGames/{id}" element={<BoardGameList/>} />
+                <Route path="/boardGames/:id" element={<BoardGame/>} />
                 <Route path="/createEvent" element={<BoardGameList/>} />
                 <Route path="/eventList" element={<EventList/>} />
             </Routes>
