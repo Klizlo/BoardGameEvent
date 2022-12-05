@@ -30,7 +30,7 @@ public class BoardGameCategoryController {
                 .mapToBoardGameCategoryDto(boardGameCategoryService.getBoardGameCategory(id));
     }
 
-    @PostMapping("/boardGameCategories")
+    @PostMapping("/boardGamesCategories")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public BoardGameCategoryDto saveBoardGameCategory(@Valid @RequestBody BoardGameCategory boardGameCategory){
@@ -38,14 +38,14 @@ public class BoardGameCategoryController {
                 .mapToBoardGameCategoryDto(boardGameCategoryService.saveBoardGameCategory(boardGameCategory));
     }
 
-    @PutMapping("/boardGameCategories/{id}")
+    @PutMapping("/boardGamesCategories/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public BoardGameCategoryDto updateBoardGameCategory(@PathVariable Long id, @Valid @RequestBody BoardGameCategory boardGameCategory){
         return BoardGameCategoryDtoMapper
                 .mapToBoardGameCategoryDto(boardGameCategoryService.updateBoardGameCategory(id, boardGameCategory));
     }
 
-    @DeleteMapping("/boardGameCategories/{id}")
+    @DeleteMapping("/boardGamesCategories/{id}")
     public void deleteBoardGameCategory(@PathVariable Long id){
         boardGameCategoryService.delete(id);
     }
