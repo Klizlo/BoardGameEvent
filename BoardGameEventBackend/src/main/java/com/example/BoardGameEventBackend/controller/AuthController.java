@@ -1,5 +1,6 @@
 package com.example.BoardGameEventBackend.controller;
 
+import com.example.BoardGameEventBackend.dto.UserDtoMapper;
 import com.example.BoardGameEventBackend.model.User;
 import com.example.BoardGameEventBackend.model.credentials.LoginCredentials;
 import com.example.BoardGameEventBackend.model.credentials.RegistrationCredentials;
@@ -37,7 +38,7 @@ public class AuthController {
         String token = jwtUtils.generateJwtToken(authentication);
         User loggedUser = userService.findByUsername(loginCredentials.getUsername());
         return ResponseEntity.ok().body(new HashMap<>(Map.of(
-                "user", loggedUser,
+                "user", UserDtoMapper.mapToUserDto(loggedUser),
                 "token", token
         )));
     }
@@ -58,7 +59,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateJwtToken(authentication);
         return ResponseEntity.ok().body(new HashMap<>(Map.of(
-                "user", loggedUser,
+                "user", UserDtoMapper.mapToUserDto(loggedUser),
                 "token", token
         )));
     }
