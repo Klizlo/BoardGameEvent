@@ -46,10 +46,66 @@ export default function BoardGameDetails(boardGame) {
                     }}
                     id="name"
                     fullWidth
-                    label="Producer name"
+                    label="Board Game Name"
                     name="name"
                     onChange={(e) => {}}
                     value={data.name}
+                />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} >
+                <TextField
+                    margin="normal"
+                    InputProps={{
+                        readOnly: true
+                    }}
+                    id="numberOfPlayers"
+                    fullWidth
+                    label="Number of Players"
+                    name="numberOfPlayers"
+                    onChange={(e) => {}}
+                    value= {data.minNumberOfPlayers + " - "  + data.maxNumberOfPlayers}
+                />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} >
+                <TextField
+                    margin="normal"
+                    InputProps={{
+                        readOnly: true
+                    }}
+                    id="producerName"
+                    fullWidth
+                    label="Producer Name"
+                    name="producerName"
+                    onChange={(e) => {}}
+                    value={data.producer.name}
+                />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} >
+                <TextField
+                    margin="normal"
+                    InputProps={{
+                        readOnly: true
+                    }}
+                    id="tag"
+                    fullWidth
+                    label="Tag"
+                    name="tag"
+                    onChange={(e) => {}}
+                    value={data.boardGameCategory.name}
+                />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} >
+                <TextField
+                    margin="normal"
+                    InputProps={{
+                        readOnly: true
+                    }}
+                    id="age"
+                    fullWidth
+                    label="Age Restriction"
+                    name="age"
+                    onChange={(e) => {}}
+                    value={data.ageRestriction}
                 />
             </Grid>
             {currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
@@ -66,7 +122,7 @@ export default function BoardGameDetails(boardGame) {
                         }}
                         startIcon={<Edit />}
                         onClick={() => {
-                            window.location = '/producers/' + data.id + '/edit'
+                            window.location = '/boardGames/' + data.id + '/edit'
                         }}>
                         Update
                     </Button>
