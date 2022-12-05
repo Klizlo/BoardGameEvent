@@ -2,13 +2,11 @@ import Box from '@mui/material/Box';
 import {Link} from "react-router-dom";
 import React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import {AppBar, Avatar, Button, ButtonGroup, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from "@mui/material";
+import {AppBar, Avatar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from "@mui/material";
 import { authenticationService } from '../../service/authenticateService';
-import { useNavigate } from 'react-router-dom/dist';
 
 const NavBar = (sites) => {
 
-    const navigate = useNavigate();
     let currentUser = authenticationService.currentUserValue;
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -172,54 +170,6 @@ const NavBar = (sites) => {
             </Container>
           </AppBar>
       );
-
-    // return (
-    //     <Box sx={{
-    //         width: '100%',
-    //         bgcolor: 'background.paper',
-    //     }}>
-    //         <ButtonGroup
-    //             variant="outlined"
-    //             sx={{
-    //                 p: 2,
-    //                 position: 'center'
-    //             }}
-
-    //         >
-    //             {sites.sites.map((site) => {
-    //                 if (site.visible) {
-    //                     return (
-    //                         <Button variant={'contained'} color={"info"} key={site.name} onClick={() => {
-    //                             navigate(site.link)
-    //                         }
-    //                         }>{site.name}</Button>
-    //                     );
-    //                 }
-    //             })}
-    //             {currentUser ? (
-    //                 <Button
-    //                     variant={'contained'}
-    //                     color={"warning"}
-    //                     key={"logOut"}
-    //                     onClick={() => {
-    //                         authenticationService.logout()
-    //                     }}>
-    //                     LogOut
-    //                 </Button>
-    //             ) : (
-    //                 <Button
-    //                     variant={'contained'}
-    //                     color={"warning"}
-    //                     key={"logIn"}
-    //                     onClick={() => {
-    //                         navigate("/login")
-    //                     }}>
-    //                     LogIn
-    //                 </Button>
-    //             )}
-    //         </ButtonGroup>
-    //     </Box>
-    // );
 };
 
 export default NavBar

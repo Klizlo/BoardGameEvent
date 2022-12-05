@@ -8,7 +8,8 @@ import { Role } from "../helpers/role";
 import NavBar from "../components/Navigation/NavBar";
 import BoardGameList from "./BoardGame/BoardGameList";
 import EventList from "./Event/EventList";
-import LogIn from "./Account/LogIn";
+import LoginPage from "./Account/LogIn";
+import RegisterPage from "./Account/Register";
 
 const WebPages = () => {
     const sites = [
@@ -34,7 +35,8 @@ const WebPages = () => {
             <NavBar sites={sites}/>
             <Routes>
                 <Route path='/boardGames' element={<BoardGameList />}/>
-                <Route path='/login' element={<LogIn />}/>
+                <Route path='/login' element={<LoginPage />}/>
+                <Route path='/register' element={<RegisterPage />} />
                 <Route path='/boardGames/add' element={<Guard component={<BoardGameList/>} roles={[Role.Admin]} />} />
                 <Route path="/boardGames/{id}" element={<BoardGameList/>} />
                 <Route path="/createEvent" element={<BoardGameList/>} />

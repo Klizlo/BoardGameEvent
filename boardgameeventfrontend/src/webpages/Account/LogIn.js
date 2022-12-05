@@ -7,7 +7,7 @@ import { useState } from "react";
 import SaveIcon from '@mui/icons-material/Send';
 import { authenticationService } from "../../service/authenticateService";
 
-export default function HomePage() {
+export default function LoginPage() {
     const [data, setData] = useState({username: "", password: ""});
     const [loading, setLoading] = useState(false);
 
@@ -106,7 +106,7 @@ export default function HomePage() {
                             </LoadingButton>
                             <Grid container>
                                 <Grid item>
-                                <Link href="/signup" variant="body2" color='#fe2800'>
+                                <Link href="/register" variant="body2" color='#fe2800'>
                                     {"Sign Up"}
                                 </Link>
                                 </Grid>
