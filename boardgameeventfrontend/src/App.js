@@ -1,5 +1,5 @@
 import './App.css';
-import {createTheme, ThemeProvider} from "@mui/material";
+import {Box, createTheme, ThemeProvider} from "@mui/material";
 import WebPages from "./webpages/WebPages";
 import React from 'react';
 import { authenticationService } from './service/authenticateService';
@@ -37,7 +37,12 @@ class App extends React.Component {
     const { currentUser, isAdmin } = this.state;
     return (
       <ThemeProvider theme={darkTheme}>
-        <WebPages/>
+        <Box sx={{
+          bgcolor: "background.default",
+          height: "100vh"
+        }}>
+          <WebPages/>
+        </Box>
       </ThemeProvider>
     );
   }

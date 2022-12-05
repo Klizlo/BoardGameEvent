@@ -87,8 +87,9 @@ const NavBar = (sites) => {
                       display: { xs: 'block', md: 'none' },
                     }}
                   >
-                    {sites.sites.filter((site) => site.role === "none" ).map((page) => (
-                      <MenuItem element={Link} to={page.link} key={page.name} onClick={handleCloseNavMenu}>
+                    {sites.sites.filter((site) => !currentUser ? site.role === "none" : site.role === "none" || currentUser.user.roles.map(role => role.name).includes(site.role) )
+                    .map((page) => (
+                      <MenuItem component={Link} to={page.link} key={page.name} onClick={handleCloseNavMenu}>
                         <Typography textAlign="center">{page.name}</Typography>
                       </MenuItem>
                     ))}
