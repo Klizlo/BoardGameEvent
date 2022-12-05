@@ -14,7 +14,7 @@ const goToDetails = (params) => {
                 color={"info"}
                 size={"small"}
                 onClick={() => {
-                    navigate("/game/" + params.row.id)
+                    navigate("/boardGames/" + params.row.id)
                 }}
             >
                 <InfoIcon/>
@@ -23,7 +23,7 @@ const goToDetails = (params) => {
                 color={"error"}
                 size={"small"}
                 onClick={() => {
-                    navigate("/game/" + params.row.id)
+                    navigate("/boardGames/" + params.row.id)
                 }}
             >
                 <DeleteIcon/>
