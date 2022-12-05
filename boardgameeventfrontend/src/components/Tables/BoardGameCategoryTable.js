@@ -26,7 +26,7 @@ const GoToDetails = (params) => {
 
     const handleClick = () => {
         setOpen(false);
-        fetch(`${Variables.API}/producers/` + params.params.row.id, {
+        fetch(`${Variables.API}/boardGamesCategories/` + params.params.row.id, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const GoToDetails = (params) => {
             }
         });
         if(!openAlert){
-            window.location = '/producers';
+            window.location = '/boardGamesCategories';
         }
     }
 
@@ -52,7 +52,7 @@ const GoToDetails = (params) => {
                 color={"info"}
                 size={"small"}
                 onClick={() => {
-                    navigate("/producers/" + params.params.row.id)
+                    navigate("/boardGamesCategories/" + params.params.row.id)
                 }}
             >
                 <InfoIcon/>
@@ -63,7 +63,7 @@ const GoToDetails = (params) => {
                 color={"warning"}
                 size={"small"}
                 onClick={() => {
-                    navigate('/producers/' + params.params.row.id + '/edit')
+                    navigate('/boardGamesCategories/' + params.params.row.id + '/edit')
                 }}
                 >
                     <Edit />
@@ -109,7 +109,7 @@ const GoToDetails = (params) => {
 }
 
 let columns = [
-    {field: 'name', headerName: 'Producer Name', width: 250, flex: 4},
+    {field: 'name', headerName: 'Board Game Category Name', width: 250, flex: 4},
     {
         field: 'Options',
         sortable: false,
@@ -118,9 +118,9 @@ let columns = [
     }
 ];
 
-const ProducerTable = producerData => {
+const BoardGameCategoryTable = BoardGameCategoryData => {
 
-    const producers = producerData.ProducerData;
+    const boardGameCategory = BoardGameCategoryData.BoardGameCategoryData;
     
     return (
     <Grid
@@ -138,7 +138,7 @@ const ProducerTable = producerData => {
         height={700}
     >
         <DataGrid
-            rows={producers}
+            rows={boardGameCategory}
             columns={columns}
             pageSize={20}
             rowsPerPageOptions={[20]}
@@ -147,4 +147,4 @@ const ProducerTable = producerData => {
     );
 }
 
-export default ProducerTable;
+export default BoardGameCategoryTable;
