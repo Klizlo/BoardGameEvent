@@ -12,13 +12,7 @@ export default function ProfileDetails(events) {
 
     const eventData = events.events;
 
-    console.log(eventData);
-
     const currentUser = authenticationService.currentUserValue;
-
-    console.log(eventData);
-
-    console.log(currentUser)
 
     return (
         <Grid

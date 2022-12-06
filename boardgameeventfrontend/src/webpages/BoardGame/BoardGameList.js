@@ -19,12 +19,10 @@ const BoardGameList = () => {
                 (data) => {
                     setIsLoaded(true);
                     setBoardGames(data);
-                    console.log(data);
                 },
                 (error) => {
                     setIsLoaded(true);
                     setError(error);
-                    console.log(error);
                 }
             )
     }, []);

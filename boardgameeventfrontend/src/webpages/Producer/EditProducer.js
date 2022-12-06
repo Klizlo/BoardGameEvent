@@ -25,7 +25,6 @@ export default function EditProducer() {
         })
         .then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);

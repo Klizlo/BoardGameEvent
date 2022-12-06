@@ -8,8 +8,6 @@ import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
 
 export default function EditProducerForm(producer) {
-    
-    console.log(producer);
 
     const [data, setData] = useState({
         name: producer.producer.name,
@@ -35,7 +33,6 @@ export default function EditProducerForm(producer) {
         })
         .then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);
@@ -54,7 +51,6 @@ export default function EditProducerForm(producer) {
     };
     
     const handleChange = (e) => {
-        console.log(e.target.value);
         setData({...data, [e.target.name]: e.target.value});
     };
 
@@ -105,7 +101,7 @@ export default function EditProducerForm(producer) {
                         }
                     }}
                     onClick={()=>{
-                        window.location = '/';
+                        window.location = '/producers/' + producer.producer.id;
                     }}>
                         Cancel
                 </Button>

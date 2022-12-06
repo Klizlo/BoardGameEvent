@@ -223,7 +223,7 @@ export default function AddBoardGameForm(boardGame) {
                         }
                     }}
                     onClick={()=>{
-                        window.location = '/';
+                        window.location = '/boardGames';
                     }}>
                     Cancel
                 </Button>

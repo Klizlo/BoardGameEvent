@@ -26,7 +26,6 @@ export default function BoardGameDetails(boardGame) {
             headers: authHeader,
         }).then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 if (result.msg){
                     setOpenAlert(true);
                     setError(result.message);
@@ -156,7 +155,7 @@ export default function BoardGameDetails(boardGame) {
             aria-labelledby="draggable-dialog-title"
         >
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                Do you want to remove producer from the list?
+                Do you want to remove {data.name}?
             </DialogTitle>
             <DialogActions>
                 <Button startIcon={<Cancel />} autoFocus onClick={() => {setOpen(false)}}>

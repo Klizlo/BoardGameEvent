@@ -23,8 +23,6 @@ export default function EventDetails(event) {
         setOpenAlert(false);
     }
 
-    console.log(data);
-
     const handleClick = () => {
         setOpen(false);
         fetch(`${Variables.API}/events/` + data.id, {
@@ -36,7 +34,6 @@ export default function EventDetails(event) {
             },
         }).then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if (result.msg){
                 setOpenAlert(true);
                 setError(result.message);
@@ -236,7 +233,7 @@ export default function EventDetails(event) {
             aria-labelledby="draggable-dialog-title"
         >
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                Do you want to remove event?
+                Do you want to remove {data.name}?
             </DialogTitle>
             <DialogActions>
             <Button startIcon={<Cancel />} autoFocus onClick={() => {setOpen(false)}}>

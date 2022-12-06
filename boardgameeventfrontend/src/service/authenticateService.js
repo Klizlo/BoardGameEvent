@@ -14,7 +14,6 @@ export const authenticationService = {
 };
 
 function login(username, password) {
-    console.log(JSON.stringify({username, password}));
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,7 +32,6 @@ function login(username, password) {
 }
 
 function register(username, email, password) {
-    console.log(JSON.stringify({username, email, password}));
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

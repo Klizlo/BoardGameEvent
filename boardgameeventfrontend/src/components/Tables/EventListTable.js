@@ -36,7 +36,6 @@ const GoToDetails = (params) => {
             },
         }).then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if (result.msg){
                 setOpenAlert(true);
                 setError(result.message);
@@ -48,8 +47,6 @@ const GoToDetails = (params) => {
             window.location = '/events';
         }
     }
-
-    console.log(params.params.row);
 
     return (
         <strong key={params.params.row.id}>
@@ -83,7 +80,7 @@ const GoToDetails = (params) => {
                 aria-labelledby="draggable-dialog-title"
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Do you want remove event from list?
+                    Do you want remove {params.params.row.name} from list?
                 </DialogTitle>
                 <DialogActions>
                 <Button startIcon={<CancelIcon />} autoFocus onClick={() => {setOpen(false)}}>

@@ -14,9 +14,7 @@ export default function EditEventForm(event) {
 
     const [boardGames, setBoardGames] = useState([]);
 
-    console.log(event.event.date);
     const [selectedDate, setDate] = useState(dayjs(event.event.date));
-    console.log(selectedDate);
 
     const [boardGame, setBoardGame] = useState(event.event.boardGame.name);
 
@@ -40,7 +38,6 @@ export default function EditEventForm(event) {
         })
         .then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);
@@ -59,7 +56,6 @@ export default function EditEventForm(event) {
     };
     
     const handleChange = (e) => {
-        console.log(e.target.value);
         setData({...data, [e.target.name]: e.target.value});
     };
 
@@ -131,7 +127,6 @@ export default function EditEventForm(event) {
                                     label="Date"
                                     name="date"
                                     onChange={(e) => {
-                                        console.log(e.format("YYYY-MM-DDTHH:mm"));
                                         setDate(e);
                                         setData({...data, date : e.format("YYYY-MM-DDTHH:mm")});
                                     }}
@@ -194,7 +189,7 @@ export default function EditEventForm(event) {
                         }
                     }}
                     onClick={()=>{
-                        window.location = '/events' + event.event.id;
+                        window.location = '/events/' + event.event.id;
                     }}>
                         Cancel
                 </Button>

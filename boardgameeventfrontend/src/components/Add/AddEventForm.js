@@ -32,8 +32,6 @@ export default function AddEventForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(data);
-        console.log(JSON.stringify(data));
         setLoading(true);
         if(selectedDate === ''){
             setError('Select event date');
@@ -143,7 +141,6 @@ export default function AddEventForm() {
                                     name="date"
                                     
                                     onChange={(e) => {
-                                        console.log(e.format("YYYY-MM-DDTHH:mm"));
                                         setDate(e);
                                         setData({...data, date : e.format("YYYY-MM-DDTHH:mm")});
                                     }}

@@ -22,7 +22,6 @@ const ProducerList = () => {
                 (error) => {
                     setIsLoaded(true);
                     setError(error);
-                    console.log(error);
                 }
             )
     }, []);

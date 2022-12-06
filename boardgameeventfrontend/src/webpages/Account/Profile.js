@@ -27,7 +27,6 @@ export default function Profile() {
         })
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 if (result.msg) {
                     setOpenAlert(true);
                     setError(result.msg);
@@ -38,8 +37,6 @@ export default function Profile() {
                 }
             })
     }, []);
-
-    console.log(eventsData)
 
     const handleAlert = (e) => {
         setOpenAlert(false);

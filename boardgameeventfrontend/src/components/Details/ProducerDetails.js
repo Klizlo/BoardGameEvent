@@ -30,7 +30,6 @@ export default function ProducerDetails(producer) {
             },
         }).then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if (result.msg){
                 setOpenAlert(true);
                 setError(result.message);
@@ -104,7 +103,7 @@ export default function ProducerDetails(producer) {
             aria-labelledby="draggable-dialog-title"
         >
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-            Do you want to remove producer from the list?
+            Do you want to remove {data.name}?
             </DialogTitle>
             <DialogActions>
             <Button startIcon={<Cancel />} autoFocus onClick={() => {setOpen(false)}}>

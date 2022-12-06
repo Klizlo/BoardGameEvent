@@ -101,7 +101,7 @@ export default function AddProducerForm() {
                         }
                     }}
                     onClick={()=>{
-                        window.location = '/';
+                        window.location = '/producers';
                     }}>
                         Cancel
                 </Button>

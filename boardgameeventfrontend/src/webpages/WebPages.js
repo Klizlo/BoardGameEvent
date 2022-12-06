@@ -29,12 +29,12 @@ import EditEvent from "./Event/EditEvent";
 const WebPages = () => {
     const sites = [
         {
-            name: "Board Games List",
+            name: "Board Games",
             link: "/boardGames",
             role: "none"
         },
         {
-            name: "Event list",
+            name: "Events",
             link: "/events",
             role: "none"
         },
@@ -44,7 +44,7 @@ const WebPages = () => {
             role: "none",
         },
         {
-            name: "BoardGameCategory",
+            name: "Board Game Categories",
             link: "/boardGamesCategories",
             role: "none",
         },

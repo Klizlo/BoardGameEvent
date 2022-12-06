@@ -30,7 +30,6 @@ export default function BoardGameCategory() {
         })
         .then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);

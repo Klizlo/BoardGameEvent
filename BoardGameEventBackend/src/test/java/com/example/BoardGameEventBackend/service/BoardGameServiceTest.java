@@ -6,9 +6,7 @@ import com.example.BoardGameEventBackend.model.AgeRestriction;
 import com.example.BoardGameEventBackend.model.BoardGame;
 import com.example.BoardGameEventBackend.model.BoardGameCategory;
 import com.example.BoardGameEventBackend.model.Producer;
-import com.example.BoardGameEventBackend.repository.BoardGameCategoryRepository;
 import com.example.BoardGameEventBackend.repository.BoardGameRepository;
-import com.example.BoardGameEventBackend.repository.ProducerRepository;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;

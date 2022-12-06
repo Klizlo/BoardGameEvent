@@ -23,7 +23,6 @@ const BoardGameCategoryList = () => {
                 (error) => {
                     setIsLoaded(true);
                     setError(error);
-                    console.log(error);
                 }
             )
     }, []);

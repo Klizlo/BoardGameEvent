@@ -47,7 +47,6 @@ const GoToDetails = (params) => {
             },
         }).then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if (result.msg){
                 setOpenAlert(true);
                 setError(result.message);
@@ -95,7 +94,7 @@ const GoToDetails = (params) => {
                 aria-labelledby="draggable-dialog-title"
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Do you want remove board game category from list?
+                    Do you want remove {params.params.row.name} from list?
                 </DialogTitle>
                 <DialogActions>
                 <Button startIcon={<CancelIcon />} autoFocus onClick={() => {setOpen(false)}}>

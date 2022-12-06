@@ -24,8 +24,6 @@ const GoToDetails = (params) => {
 
     const eventId = useParams();
 
-    console.log(eventId);
-
     const handleClick = () => {
         setOpen(false);
         fetch(`${Variables.API}/events/${eventId.id}/players/${params.params.row.id}`, {
@@ -37,7 +35,6 @@ const GoToDetails = (params) => {
             },
         }).then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if (result.msg){
                 setOpenAlert(true);
                 setError(result.message);

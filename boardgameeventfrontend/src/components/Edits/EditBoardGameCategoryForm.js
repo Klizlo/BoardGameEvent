@@ -8,8 +8,6 @@ import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
 
 export default function EditBoardGameCategoryForm(boardGamesCategory) {
-    
-    console.log(boardGamesCategory);
 
     const [data, setData] = useState({
         name: boardGamesCategory.boardGamesCategory.name,
@@ -35,7 +33,6 @@ export default function EditBoardGameCategoryForm(boardGamesCategory) {
         })
         .then((response) => response.json())
         .then((result) => {
-            console.log(result);
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);
@@ -54,7 +51,6 @@ export default function EditBoardGameCategoryForm(boardGamesCategory) {
     };
     
     const handleChange = (e) => {
-        console.log(e.target.value);
         setData({...data, [e.target.name]: e.target.value});
     };
 

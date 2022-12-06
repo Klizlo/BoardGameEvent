@@ -75,7 +75,7 @@ export default function AddBoardGame() {
                     color: 'white'
                 }}
             >
-                Add Producer
+                Add Board Game
             </Typography>
             {producersData != null && boardGamesCategoriesData != null ? <AddBoardGameForm producers={producersData} boardGamesCategories={boardGamesCategoriesData}/> : <Typography >Fetching...</Typography>}
             <Snackbar
