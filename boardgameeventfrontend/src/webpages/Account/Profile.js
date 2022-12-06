@@ -36,6 +36,8 @@ export default function Profile() {
             })
     }, []);
 
+    console.log(eventsData)
+
     const handleAlert = (e) => {
         setOpenAlert(false);
     };
