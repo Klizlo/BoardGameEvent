@@ -1,5 +1,5 @@
 import { Cancel, Delete, Edit } from "@mui/icons-material";
-import { Alert, Button, Dialog, DialogActions, DialogTitle, Grid, Snackbar, TextField, Typography } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogTitle, Grid, Snackbar, TextField} from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { authHeader } from "../../helpers/auth-header";
@@ -7,9 +7,9 @@ import { Role } from "../../helpers/role";
 import { authenticationService } from "../../service/authenticateService";
 import Variables from "../Globals/Variables";
 
-export default function ProducerDetails(producer) {
+export default function BoardGameCategoryDetails(boardGamesCategory) {
     const currentUser = authenticationService.currentUserValue;
-    const [data, setData] = useState(producer.producer);
+    const [data, setData] = useState(boardGamesCategory.boardGamesCategory);
 
     const [open, setOpen] = useState(false);
     const [error, setError] = useState("");
@@ -21,7 +21,7 @@ export default function ProducerDetails(producer) {
 
     const handleClick = () => {
         setOpen(false);
-        fetch(`${Variables.API}/producers/` + data.id, {
+        fetch(`${Variables.API}/boardGamesCategories/` + data.id, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
@@ -35,9 +35,9 @@ export default function ProducerDetails(producer) {
                 setOpenAlert(true);
                 setError(result.message);
             }
-        });
+        })
         if(!openAlert){
-            window.location = '/producers';
+            window.location = '/boardGamesCategories';
         }
     }
 
@@ -51,7 +51,7 @@ export default function ProducerDetails(producer) {
                     }}
                     id="name"
                     fullWidth
-                    label="Producer name"
+                    label="Board Game Category name"
                     name="name"
                     onChange={(e) => {}}
                     value={data.name}
@@ -71,7 +71,7 @@ export default function ProducerDetails(producer) {
                     }}
                     startIcon={<Edit />}
                     onClick={() => {
-                        window.location = '/producers/' + data.id + '/edit'
+                        window.location = '/boardGamesCategories/' + data.id + '/edit'
                       }}>
                     Update
                 </Button>
@@ -102,7 +102,7 @@ export default function ProducerDetails(producer) {
             aria-labelledby="draggable-dialog-title"
         >
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-            Do you want to remove producer from the list?
+                Do you want to remove producer from the list?
             </DialogTitle>
             <DialogActions>
             <Button startIcon={<Cancel />} autoFocus onClick={() => {setOpen(false)}}>

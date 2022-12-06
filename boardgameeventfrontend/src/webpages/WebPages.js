@@ -17,6 +17,10 @@ import AddProducer from "./Producer/AddProducer";
 import BoardGame from "./BoardGame/BoardGame";
 import EditBoardGame from "./BoardGame/EditBoardGame";
 import AddBoardGame from "./BoardGame/AddBoardGame";
+import BoardGameCategoryList from "./BoardGameCategory/BoardGameCategoryList";
+import BoardGameCategory from "./BoardGameCategory/BoardGameCategory";
+import EditBoardGameCategory from "./BoardGameCategory/EditBoardGameCategory";
+import AddBoardGameCategory from "./BoardGameCategory/AddBoardGameCategory";
 
 const WebPages = () => {
     const sites = [
@@ -35,6 +39,11 @@ const WebPages = () => {
             link: "/producers",
             role: "none",
         },
+        {
+            name: "BoardGameCategory",
+            link: "/boardGamesCategories",
+            role: "none",
+        },
     ];
 
     return(
@@ -51,6 +60,10 @@ const WebPages = () => {
                 <Route path='/producers/:id' element={<Producer />} />
                 <Route path='/producers/:id/edit' element={<Guard component={<EditProducer />} roles={[Role.Admin]}/>} />
                 <Route path='/producers/add' element={<Guard component={<AddProducer />} roles={[Role.Admin]}/>} />
+                <Route path='/boardGamesCategories' element={<BoardGameCategoryList />} />
+                <Route path='/boardGamesCategories/:id' element={<BoardGameCategory />} />
+                <Route path='/boardGamesCategories/:id/edit' element={<Guard component={<EditBoardGameCategory />} roles={[Role.Admin]}/>} />
+                <Route path='/boardGamesCategories/add' element={<Guard component={<AddBoardGameCategory />} roles={[Role.Admin]}/>} />
                 <Route path='/login' element={<LoginPage />}/>
                 <Route path='/register' element={<RegisterPage />} />
             </Routes>

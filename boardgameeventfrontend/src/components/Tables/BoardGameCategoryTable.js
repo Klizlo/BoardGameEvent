@@ -11,7 +11,7 @@ import { Role } from "../../helpers/role";
 import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
 
-const ShowOptions = (params) => {
+const GoToDetails = (params) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const navigate = useNavigate();
     const currentUser = authenticationService.currentUserValue;
@@ -26,7 +26,7 @@ const ShowOptions = (params) => {
 
     const handleClick = () => {
         setOpen(false);
-        fetch(`${Variables.API}/producers/` + params.params.row.id, {
+        fetch(`${Variables.API}/boardGamesCategories/` + params.params.row.id, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const ShowOptions = (params) => {
             }
         });
         if(!openAlert){
-            window.location = '/producers';
+            window.location = '/boardGamesCategories';
         }
     }
 
@@ -52,7 +52,7 @@ const ShowOptions = (params) => {
                 color={"info"}
                 size={"small"}
                 onClick={() => {
-                    navigate("/producers/" + params.params.row.id)
+                    navigate("/boardGamesCategories/" + params.params.row.id)
                 }}
             >
                 <InfoIcon/>
@@ -63,7 +63,7 @@ const ShowOptions = (params) => {
                 color={"warning"}
                 size={"small"}
                 onClick={() => {
-                    navigate('/producers/' + params.params.row.id + '/edit')
+                    navigate('/boardGamesCategories/' + params.params.row.id + '/edit')
                 }}
                 >
                     <Edit />
@@ -109,18 +109,18 @@ const ShowOptions = (params) => {
 }
 
 let columns = [
-    {field: 'name', headerName: 'Producer Name', width: 250, flex: 4},
+    {field: 'name', headerName: 'Board Game Category Name', width: 250, flex: 4},
     {
         field: 'Options',
         sortable: false,
-        renderCell: (props) => {return <ShowOptions params={props} />},
+        renderCell: (props) => {return <GoToDetails params={props} />},
         width: 150,
     }
 ];
 
-const ProducerTable = producerData => {
+const BoardGameCategoryTable = BoardGameCategoryData => {
 
-    const producers = producerData.ProducerData;
+    const boardGameCategory = BoardGameCategoryData.BoardGameCategoryData;
     
     return (
     <Grid
@@ -138,7 +138,7 @@ const ProducerTable = producerData => {
         height={700}
     >
         <DataGrid
-            rows={producers}
+            rows={boardGameCategory}
             columns={columns}
             pageSize={20}
             rowsPerPageOptions={[20]}
@@ -147,4 +147,4 @@ const ProducerTable = producerData => {
     );
 }
 
-export default ProducerTable;
+export default BoardGameCategoryTable;
