@@ -7,11 +7,14 @@ import { Cancel } from "@mui/icons-material";
 import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
 
+const ageRestrictionList = [
+    '+7',
+    '+14',
+    '+18'
+]
+
 export default function EditBoardGameForm(boardGame) {
 
-    console.log(boardGame);
-    console.log(boardGame.boardGamesCategories);
-    console.log(boardGame.producers);
 
     const [data, setData] = useState({
         name: boardGame.boardGame.name,
@@ -22,7 +25,6 @@ export default function EditBoardGameForm(boardGame) {
         producer: boardGame.boardGame.producer,
     });
 
-    console.log(data)
 
     const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
 
@@ -42,11 +44,15 @@ export default function EditBoardGameForm(boardGame) {
             },
             body: JSON.stringify({
                 name: data.name,
+                ageRestriction: data.ageRestriction,
+                minNumberOfPlayers: data.minNumberOfPlayers,
+                maxNumberOfPlayers: data.maxNumberOfPlayers,
+                boardGameCategory: data.boardGameCategory,
+                producer: data.producer,
             })
         })
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 if(result.msg){
                     setOpenAlert(true);
                     setError(result.msg);
@@ -55,7 +61,7 @@ export default function EditBoardGameForm(boardGame) {
                     window.location = '/';
                 } else {
                     setData(result);
-                    window.location = '/producers/' + boardGame.boardGame.id;
+                    window.location = '/boardGames/' + boardGame.boardGame.id;
                 }
             });
     };
@@ -64,8 +70,25 @@ export default function EditBoardGameForm(boardGame) {
         setOpenAlert(false);
     };
 
+    const handleProducerChange = (e) => {
+      let id = '';
+      boardGame.producers.map(producer => {
+          if (producer.name === e.target.value){
+              id = producer.id;
+          }
+      });
+      setData({...data, producer : {name : e.target.value, id: id}});
+    };
+    const handleGameCategoryChange = (e) => {
+        let id = '';
+        boardGame.boardGamesCategories.map(category => {
+            if (category.name === e.target.value){
+                id = category.id;
+            }
+        });
+        setData({...data, boardGameCategory : {name : e.target.value, id: id}});
+    };
     const handleChange = (e) => {
-        console.log(e.target.value);
         setData({...data, [e.target.name]: e.target.value});
     };
 
@@ -90,6 +113,7 @@ export default function EditBoardGameForm(boardGame) {
                         id="minNumberOfPlayers"
                         fullWidth
                         required
+                        type="number"
                         label="Min Number of Players"
                         name="minNumberOfPlayers"
                         onChange={handleChange}
@@ -103,59 +127,68 @@ export default function EditBoardGameForm(boardGame) {
                         fullWidth
                         required
                         label="Max Number of Players"
+                        type="number"
                         name="maxNumberOfPlayers"
                         onChange={handleChange}
                         value= {data.maxNumberOfPlayers}
                     />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} >
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="chose"
-                        name="producer"
-                        value={data.producer.name}
-                        label="Age"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
                     <TextField
                         margin="normal"
                         id="producerName"
+                        select
                         fullWidth
                         required
                         label="Producer Name"
-                        name="producerName"
-                        onChange={handleChange}
+                        name="producer"
+                        onChange={handleProducerChange}
                         value={data.producer.name}
-                    />
+                    >
+                        {boardGame.producers.map(producer => {
+                            return(
+                                <MenuItem key={producer.id} value={producer.name}>{producer.name}</MenuItem>
+                            )
+                        })}
+                    </TextField>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} >
                     <TextField
                         margin="normal"
-                        id="tag"
+                        id="gameCategory"
                         fullWidth
+                        select
                         required
-                        label="Tag"
-                        name="tag"
-                        onChange={handleChange}
+                        label="Game Category"
+                        name="boardGameCategory"
+                        onChange={handleGameCategoryChange}
                         value={data.boardGameCategory.name}
-                    />
+                    >
+                        {boardGame.boardGamesCategories.map(category => {
+                            return(
+                                <MenuItem key={category.id} value={category.name}>{category.name}</MenuItem>
+                            )
+                        })}
+                    </TextField>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} >
                     <TextField
                         margin="normal"
                         id="age"
                         fullWidth
+                        select
                         required
                         label="Age Restriction"
-                        name="age"
+                        name="ageRestriction"
                         onChange={handleChange}
                         value={data.ageRestriction}
-                    />
+                    >
+                        {ageRestrictionList.map(ageRestriction => {
+                            return(
+                                <MenuItem key={ageRestriction} value={ageRestriction}>{ageRestriction}</MenuItem>
+                            )
+                        })}
+                    </TextField>
                 </Grid>
                 <LoadingButton
                     type="submit"

@@ -11,7 +11,7 @@ import { Role } from "../../helpers/role";
 import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
 
-const GoToDetails = (params) => {
+const ShowOptions = (params) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const navigate = useNavigate();
     const currentUser = authenticationService.currentUserValue;
@@ -112,7 +112,7 @@ let columns = [
     {
         field: 'Options',
         sortable: false,
-        renderCell: (props) => {return <GoToDetails params={props} />},
+        renderCell: (props) => {return <ShowOptions params={props} />},
         width: 150,
     }
 ];
