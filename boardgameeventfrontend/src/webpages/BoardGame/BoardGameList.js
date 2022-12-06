@@ -1,10 +1,14 @@
 import {useEffect, useState} from "react";
 import Variables from "../../components/Globals/Variables";
 import Box from "@mui/material/Box";
-import {Grid, Typography} from "@mui/material";
+import {Button, Grid, Typography} from "@mui/material";
 import BoardGameListTable from "../../components/Tables/BoardGameListTable";
+import {Role} from "../../helpers/role";
+import {authenticationService} from "../../service/authenticateService";
 
 const BoardGameList = () => {
+
+    const currentUser = authenticationService.currentUserValue;
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -59,6 +63,17 @@ const BoardGameList = () => {
                     <Typography sx={{fontSize: 35, fontWeight: 'bold'}} color={"text.secondary"} gutterBottom>
                         Board Games
                     </Typography>
+                    {currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
+                        <Box>
+                            <Button
+                                onClick={() => {window.location = '/boardGames/add'}}
+                            >
+                                Add Board Game
+                            </Button>
+                        </Box>
+                    ) : (
+                        <></>
+                    )}
                     <BoardGameListTable BoardGamesData={boardGames}/>
                 </Grid>
             </Box>
