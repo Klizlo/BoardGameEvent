@@ -21,6 +21,9 @@ import BoardGameCategoryList from "./BoardGameCategory/BoardGameCategoryList";
 import BoardGameCategory from "./BoardGameCategory/BoardGameCategory";
 import EditBoardGameCategory from "./BoardGameCategory/EditBoardGameCategory";
 import AddBoardGameCategory from "./BoardGameCategory/AddBoardGameCategory";
+import Event from "./Event/Event";
+import AddEvent from "./Event/AddEvent";
+import EditEvent from "./Event/EditEvent";
 
 const WebPages = () => {
     const sites = [
@@ -31,7 +34,7 @@ const WebPages = () => {
         },
         {
             name: "Event list",
-            link: "/eventList",
+            link: "/events",
             role: "none"
         },
         {
@@ -54,8 +57,10 @@ const WebPages = () => {
                 <Route path="/boardGames/:id" element={<BoardGame/>} />
                 <Route path='/boardGames/:id/edit' element={<Guard component={<EditBoardGame/>} roles={[Role.Admin]}/>} />
                 <Route path='/boardGames/add' element={<Guard component={<AddBoardGame/>} roles={[Role.Admin]} />} />
-                <Route path="/createEvent" element={<BoardGameList/>} />
-                <Route path="/eventList" element={<EventList/>} />
+                <Route path="/events" element={<EventList/>} />
+                <Route path="/events/:id" element={<Event/>} />
+                <Route path="/events/:id/edit" element={<Guard component={<EditEvent/>} roles={[Role.User]} />} />
+                <Route path='/events/add' element={<Guard component={<AddEvent />} roles={[Role.User]}/>} />
                 <Route path='/producers' element={<ProducerList />} />
                 <Route path='/producers/:id' element={<Producer />} />
                 <Route path='/producers/:id/edit' element={<Guard component={<EditProducer />} roles={[Role.Admin]}/>} />

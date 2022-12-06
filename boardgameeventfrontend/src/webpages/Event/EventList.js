@@ -1,13 +1,17 @@
 import {useEffect, useState} from "react";
 import Variables from "../../components/Globals/Variables";
 import Box from "@mui/material/Box";
-import {Grid, Typography} from "@mui/material";
-import BoardGameListTable from "../../components/Tables/BoardGameListTable";
+import {Button, Grid, Typography} from "@mui/material";
+import EventListTable from "../../components/Tables/EventListTable";
+import { Role } from "../../helpers/role";
+import { authenticationService } from "../../service/authenticateService";
 
 const EventList = () => {
+    const currentUser = authenticationService.currentUserValue;
+
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [eventList, setEventList] = useState([]);
+    const [events, setEvents] = useState([]);
     const endpoint = Variables.API + '/events';
     useEffect(() => {
         fetch(endpoint, {
@@ -17,8 +21,7 @@ const EventList = () => {
             .then(
                 (data) => {
                     setIsLoaded(true);
-                    setEventList(data);
-                    console.log(data);
+                    setEvents(data);
                 },
                 (error) => {
                     setIsLoaded(true);
@@ -56,9 +59,20 @@ const EventList = () => {
                     width={'100%'}
                 >
                     <Typography sx={{fontSize: 35, fontWeight: 'bold'}} color={"text.secondary"} gutterBottom>
-                        EventList
+                       Events
                     </Typography>
-                    <BoardGameListTable BoardGamesData={eventList}/>
+                    { currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.User) ? (
+                        <Box>
+                            <Button
+                                onClick={() => {window.location = '/events/add'}}    
+                            >
+                                Add Event
+                            </Button>
+                        </Box>
+                    ) : (
+                        <></>
+                    )}
+                    <EventListTable eventData={events}/>
                 </Grid>
             </Box>
         );

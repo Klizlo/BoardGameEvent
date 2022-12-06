@@ -108,7 +108,7 @@ export default function ProducerDetails(producer) {
             <Button startIcon={<Cancel />} autoFocus onClick={() => {setOpen(false)}}>
                 Cancel
             </Button>
-            <Button sx={{color: 'red'}} startIcon={<Delete />} onClick={handleClick}>Usuń</Button>
+            <Button sx={{color: 'red'}} startIcon={<Delete />} onClick={handleClick}>Remove</Button>
             </DialogActions>
         </Dialog>
         <Snackbar

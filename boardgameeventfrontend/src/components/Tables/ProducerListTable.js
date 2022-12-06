@@ -87,7 +87,7 @@ const ShowOptions = (params) => {
                 <Button startIcon={<CancelIcon />} autoFocus onClick={() => {setOpen(false)}}>
                     Cancel
                 </Button>
-                <Button sx={{color: 'red'}} startIcon={<DeleteIcon />} onClick={handleClick}>Usuń</Button>
+                <Button sx={{color: 'red'}} startIcon={<DeleteIcon />} onClick={handleClick}>Remove</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar

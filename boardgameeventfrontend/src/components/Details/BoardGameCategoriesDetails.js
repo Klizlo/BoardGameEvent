@@ -102,13 +102,13 @@ export default function BoardGameCategoryDetails(boardGamesCategory) {
             aria-labelledby="draggable-dialog-title"
         >
             <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                Do you want to remove producer from the list?
+                Do you want to remove board game category?
             </DialogTitle>
             <DialogActions>
             <Button startIcon={<Cancel />} autoFocus onClick={() => {setOpen(false)}}>
                 Cancel
             </Button>
-            <Button sx={{color: 'red'}} startIcon={<Delete />} onClick={handleClick}>Usuń</Button>
+            <Button sx={{color: 'red'}} startIcon={<Delete />} onClick={handleClick}>Remove</Button>
             </DialogActions>
         </Dialog>
         <Snackbar
