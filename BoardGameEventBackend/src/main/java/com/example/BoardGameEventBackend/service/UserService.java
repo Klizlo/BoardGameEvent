@@ -9,10 +9,7 @@ import com.example.BoardGameEventBackend.exception.UserExistsException;
 import com.example.BoardGameEventBackend.repository.RoleRepository;
 import com.example.BoardGameEventBackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -93,7 +90,9 @@ public class UserService implements UserDetailsService {
     }
 
     public List<Event> getUserEvents(Long id){
-        return userRepository.findEventsByUser(id);
+        List<Event> userEvents = userRepository.findEventsByUser(id);
+        userEvents.addAll(userRepository.findCreatedEventsByUser(id));
+        return userEvents;
     }
 
     public void delete(Long id) throws ForbiddenException {

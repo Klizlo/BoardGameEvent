@@ -1,8 +1,8 @@
-import {Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Grid, Snackbar} from "@mui/material";
+import {Alert, Button, Dialog, DialogActions, DialogTitle, Grid, IconButton, Snackbar} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CancelIcon from '@mui/icons-material/Cancel';
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useState} from "react";
 import { authenticationService } from "../../service/authenticateService";
 import { Role } from "../../helpers/role";
@@ -12,7 +12,6 @@ import { Cancel } from "@mui/icons-material";
 
 const GoToDetails = (params) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const navigate = useNavigate();
     const currentUser = authenticationService.currentUserValue;
 
     const [open, setOpen] = useState(false);
@@ -42,6 +41,8 @@ const GoToDetails = (params) => {
             if (result.msg){
                 setOpenAlert(true);
                 setError(result.message);
+            } else if (result.status === 401){
+                window.location = '/login';
             }
         });
         if(!openAlert){
@@ -53,13 +54,12 @@ const GoToDetails = (params) => {
         <strong key={params.params.row.id}>
             { currentUser && (currentUser.user.roles.map((role) => role.name).includes(Role.Admin) || currentUser.user.id === params.params.row.id) ? (
             <strong>
-                <Fab
+                <IconButton
                     color={"error"}
-                    size={"small"}
                     onClick={() => {setOpen(true);}}
                 >
                     <Cancel/>
-                </Fab>
+                </IconButton>
                 <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
@@ -112,19 +112,15 @@ const PlayersTable = playersData => {
         marginLeft={"auto"}
         marginRight={"auto"}
         p={2}
-        border={2}
-        borderColor={"dimgrey"}
-        borderRadius={"12px"}
         container
         alignSelf={"center"}
         alignItems={"center"}
-        bgcolor={'action.hover'}
         width={'100%'}
-        height={300}
     >
         <DataGrid
             rows={players}
             columns={columns}
+            autoHeight {...players}
             pageSize={5}
             rowsPerPageOptions={[5]}
         />

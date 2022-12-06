@@ -47,31 +47,16 @@ const EventList = () => {
                     marginLeft={"auto"}
                     marginRight={"auto"}
                     p={2}
-                    border={2}
-                    borderColor={"dimgrey"}
-                    borderRadius={"12px"}
                     container
                     direction={"column"}
                     justifyContent={"space-between"}
                     alignSelf={"center"}
                     alignItems={"center"}
-                    bgcolor={'action.hover'}
                     width={'100%'}
                 >
                     <Typography sx={{fontSize: 35, fontWeight: 'bold'}} color={"text.secondary"} gutterBottom>
                        Events
                     </Typography>
-                    { currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.User) ? (
-                        <Box>
-                            <Button
-                                onClick={() => {window.location = '/events/add'}}    
-                            >
-                                Add Event
-                            </Button>
-                        </Box>
-                    ) : (
-                        <></>
-                    )}
                     <EventListTable eventData={events}/>
                 </Grid>
             </Box>

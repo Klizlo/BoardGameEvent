@@ -12,7 +12,6 @@ export default function EditBoardGameCategory() {
 
     const [openAlert, setOpenAlert] = useState(false);
     const [error, setError] = useState("");
-    const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
 
     const [data, setData] = useState(null);
 
@@ -31,8 +30,8 @@ export default function EditBoardGameCategory() {
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);
-            } else if(unauthorized.includes(result.message)) {
-                window.location = '/';
+            } else if(result.status === 401) {
+                window.location = '/login';
             } else {
                 setData(result);
             }

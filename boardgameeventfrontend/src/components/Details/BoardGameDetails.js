@@ -30,10 +30,13 @@ export default function BoardGameDetails(boardGame) {
                 if (result.msg){
                     setOpenAlert(true);
                     setError(result.message);
-                }else{
-                    window.location = '/boardGames';
+                }else if (result.status === 401){
+                    window.location = '/login';
                 }
-            })
+            });
+        if(!openAlert){
+            window.location = '/boardGames';
+        }
     }
 
     return (<Box>

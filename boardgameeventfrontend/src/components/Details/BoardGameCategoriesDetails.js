@@ -34,6 +34,8 @@ export default function BoardGameCategoryDetails(boardGamesCategory) {
             if (result.msg){
                 setOpenAlert(true);
                 setError(result.message);
+            } else if (result.status === 401) {
+                window.location = '/login';
             }
         })
         if(!openAlert){

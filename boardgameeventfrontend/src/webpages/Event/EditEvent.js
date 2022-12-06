@@ -14,7 +14,6 @@ export default function EditEvent() {
 
     const [openAlert, setOpenAlert] = useState(false);
     const [error, setError] = useState("");
-    const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
 
     const [data, setData] = useState(null);
 
@@ -33,8 +32,8 @@ export default function EditEvent() {
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);
-            } else if(unauthorized.includes(result.error)) {
-                window.location = '/';
+            } else if(result.status === 401) {
+                window.location = '/login';
             } else {
                 if(result.organizer.id === currentUser.user.id || currentUser.user.roles.map(role => role.name).includes(Role.Admin)){
                     setData(result);

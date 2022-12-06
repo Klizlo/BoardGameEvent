@@ -14,6 +14,9 @@ export default function Profile() {
     const currentUser = authenticationService.currentUserValue;
     const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
     useEffect(() => {
+        if(!currentUser){
+            window.location = '/login';
+        }
         fetch(Variables.API + '/users/' + currentUser.user.id + '/events', {
             method: 'GET',
             headers: {

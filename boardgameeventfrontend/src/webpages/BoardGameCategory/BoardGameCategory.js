@@ -15,8 +15,6 @@ export default function BoardGameCategory() {
 
     const [data, setData] = useState(null);
 
-    const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
-
     const handleAlert = (e) => {
         setOpenAlert(false);
     };
@@ -36,8 +34,8 @@ export default function BoardGameCategory() {
             if(result.msg){
                 setOpenAlert(true);
                 setError(result.msg);
-            } else if(unauthorized.includes(result.message)) {
-                window.location = '/';
+            } else if(result.status === 401) {
+                window.location = '/login';
             } else {
                 setData(result);
             }

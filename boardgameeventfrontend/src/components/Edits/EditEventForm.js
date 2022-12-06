@@ -22,8 +22,6 @@ export default function EditEventForm(event) {
 
     const [data, setData] = useState(event.event);
 
-    const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
-
     const [loading, setLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [error, setError] = useState("");
@@ -47,7 +45,7 @@ export default function EditEventForm(event) {
                 setOpenAlert(true);
                 setError(result.msg);
                 setLoading(false);
-            } else if(unauthorized.includes(result.error)) {
+            } else if(result.status === 401) {
                 window.location = '/login';
             } else {
                 setData(result);

@@ -8,7 +8,6 @@ export default function AddBoardGame() {
 
     const [openAlert, setOpenAlert] = useState(false);
     const [error, setError] = useState("");
-    const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
 
     const [producersData, setProducersData] = useState(null);
     const [boardGamesCategoriesData, setBoardGamesCategoriesData] = useState(null);
@@ -28,8 +27,8 @@ export default function AddBoardGame() {
                 if(result.msg){
                     setOpenAlert(true);
                     setError(result.msg);
-                } else if(unauthorized.includes(result.message)) {
-                    window.location = '/';
+                } else if(result.status === 401) {
+                    window.location = '/login';
                 } else {
                     setProducersData(result);
                 }
@@ -50,8 +49,8 @@ export default function AddBoardGame() {
                 if(result.msg){
                     setOpenAlert(true);
                     setError(result.msg);
-                } else if(unauthorized.includes(result.message)) {
-                    window.location = '/';
+                } else if(result.status === 401) {
+                    window.location = '/login';
                 } else {
                     setBoardGamesCategoriesData(result);
                 }
