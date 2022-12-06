@@ -1,27 +1,14 @@
-import {
-    Alert,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogTitle,
-    Grid,
-    IconButton,
-    Snackbar,
-    Tooltip
-} from "@mui/material";
+import {Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Grid, Snackbar} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
-import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CancelIcon from '@mui/icons-material/Cancel';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useState} from "react";
-import { Edit } from "@mui/icons-material";
 import { authenticationService } from "../../service/authenticateService";
 import { Role } from "../../helpers/role";
 import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
-import Box from "@mui/material/Box";
-import AddIcon from "@mui/icons-material/Add";
+import { Cancel } from "@mui/icons-material";
 
 const GoToDetails = (params) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -36,9 +23,13 @@ const GoToDetails = (params) => {
         setOpenAlert(false);
     }
 
+    const eventId = useParams();
+
+    console.log(eventId);
+
     const handleClick = () => {
         setOpen(false);
-        fetch(`${Variables.API}/boardGamesCategories/` + params.params.row.id, {
+        fetch(`${Variables.API}/events/${eventId.id}/players/${params.params.row.id}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
@@ -54,52 +45,34 @@ const GoToDetails = (params) => {
             }
         });
         if(!openAlert){
-            window.location = '/boardGamesCategories';
+            window.location = '/events/' + eventId.id;
         }
     }
 
     return (
         <strong key={params.params.row.id}>
-            <IconButton
-                color={"info"}
-                size={"small"}
-                onClick={() => {
-                    navigate("/boardGamesCategories/" + params.params.row.id)
-                }}
-            >
-                <InfoIcon/>
-            </IconButton>
-            { currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
+            { currentUser && (currentUser.user.roles.map((role) => role.name).includes(Role.Admin) || currentUser.user.id === params.params.row.id) ? (
             <strong>
-                <IconButton
-                color={"warning"}
-                size={"small"}
-                onClick={() => {
-                    navigate('/boardGamesCategories/' + params.params.row.id + '/edit')
-                }}
-                >
-                    <Edit />
-                </IconButton>
-                <IconButton
+                <Fab
                     color={"error"}
                     size={"small"}
                     onClick={() => {setOpen(true);}}
                 >
-                    <DeleteIcon/>
-                </IconButton>
+                    <Cancel/>
+                </Fab>
                 <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
                 aria-labelledby="draggable-dialog-title"
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Do you want remove board game category from list?
+                    Do you want to cancel participation?
                 </DialogTitle>
                 <DialogActions>
                 <Button startIcon={<CancelIcon />} autoFocus onClick={() => {setOpen(false)}}>
                     Cancel
                 </Button>
-                <Button sx={{color: 'red'}} startIcon={<DeleteIcon />} onClick={handleClick}>Remove</Button>
+                <Button sx={{color: 'red'}} startIcon={<DeleteIcon />} onClick={handleClick}>Yes</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar
@@ -121,67 +94,42 @@ const GoToDetails = (params) => {
 }
 
 let columns = [
-    {field: 'name', headerName: 'Board Game Category Name', flex: 1},
+    {field: 'username', headerName: 'Name', width: 250, flex: 4},
     {
-        field: 'Options',
+        field: ' ',
         sortable: false,
         renderCell: (props) => {return <GoToDetails params={props} />},
-        width: 150,
-        headerAlign: 'center',
-        align: 'center'
+        width: 70,
     }
 ];
 
-const BoardGameCategoryTable = BoardGameCategoryData => {
+const PlayersTable = playersData => {
 
-    const boardGameCategory = BoardGameCategoryData.BoardGameCategoryData;
-    const currentUser = authenticationService.currentUserValue;
+    const players = playersData.playersData;
     
     return (
     <Grid
         marginLeft={"auto"}
         marginRight={"auto"}
         p={2}
+        border={2}
+        borderColor={"dimgrey"}
+        borderRadius={"12px"}
         container
         alignSelf={"center"}
         alignItems={"center"}
-        width={'90%'}
+        bgcolor={'action.hover'}
+        width={'100%'}
+        height={300}
     >
         <DataGrid
-            rows={boardGameCategory}
+            rows={players}
             columns={columns}
-            autoHeight {...boardGameCategory}
-            pageSize={10}
-            rowsPerPageOptions={[10]}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
         />
-        {currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
-            <Grid
-                p={1}
-                container
-                direction={"row"}
-                width={'100%'}
-            >
-                <Box sx={{ flexGrow: 1 }} />
-                <Box
-                    justifyContent="flex-end"
-                >
-                    <Tooltip title={<h4>Add new Board Game Category</h4>}>
-                        <IconButton
-                            edge="end"
-                            color={"success"}
-                            onClick={() => {window.location = '/boardGamesCategories/add'}}
-                            size="large"
-                        >
-                            <AddIcon/>
-                        </IconButton>
-                    </Tooltip>
-                </Box>
-            </Grid>
-        ) : (
-            <></>
-        )}
     </Grid>
     );
 }
 
-export default BoardGameCategoryTable;
+export default PlayersTable;
