@@ -15,14 +15,13 @@ import {
 import {Role} from "../../helpers/role";
 import {Cancel, Delete, Edit} from "@mui/icons-material";
 import {authenticationService} from "../../service/authenticateService";
-import EventListTable from "../Tables/EventListTable";
+import EventList from "../../webpages/Event/EventList";
 
 export default function ProfileDetails(events) {
 
     const eventData = events.events;
 
     const currentUser = authenticationService.currentUserValue;
-    const unauthorized = ['unauthorized', 'token_invalid', 'token_absent', 'token_expired', 'user_not_found'];
 
     console.log(eventData);
 
@@ -136,7 +135,7 @@ export default function ProfileDetails(events) {
                             color: 'white'
                         }}
                     >
-                        Events:
+                       Your Events:
                     </Typography>
                     <Divider/>
                     <EventListTable eventData={eventData}/>

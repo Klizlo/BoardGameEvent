@@ -6,10 +6,13 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useState } from "react";
 import SaveIcon from '@mui/icons-material/Send';
 import { authenticationService } from "../../service/authenticateService";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
     const [data, setData] = useState({username: "", password: ""});
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setData({...data, [e.target.name]: e.target.value});
@@ -19,7 +22,7 @@ export default function LoginPage() {
         e.preventDefault();
         setLoading(true);
         authenticationService.login(data.username, data.password)
-        .then(response => window.location='/boardGames');
+        .then(response => navigate(-1));
         setLoading(false);
     };
 
