@@ -1,13 +1,9 @@
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Variables from "../../components/Globals/Variables";
 import ProducerTable from "../../components/Tables/ProducerListTable";
-import { Role } from "../../helpers/role";
-import { authenticationService } from "../../service/authenticateService";
 
 const ProducerList = () => {
-
-    const currentUser = authenticationService.currentUserValue;
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -47,31 +43,24 @@ const ProducerList = () => {
                     marginLeft={"auto"}
                     marginRight={"auto"}
                     p={2}
-                    border={2}
-                    borderColor={"dimgrey"}
-                    borderRadius={"12px"}
                     container
                     direction={"column"}
                     justifyContent={"space-between"}
                     alignSelf={"center"}
                     alignItems={"center"}
-                    bgcolor={'action.hover'}
                     width={'100%'}
                 >
-                    <Typography sx={{fontSize: 35, fontWeight: 'bold'}} color={"text.secondary"} gutterBottom>
-                       Producers
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            fontFamily: 'kdam-thmor-pro',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: "white"
+                        }}
+                    >
+                        Producers
                     </Typography>
-                    { currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
-                        <Box>
-                            <Button
-                                onClick={() => {window.location = '/producers/add'}}    
-                            >
-                                Add Producer
-                            </Button>
-                        </Box>
-                    ) : (
-                        <></>
-                    )}
                     <ProducerTable ProducerData={producers}/>
                 </Grid>
             </Box>

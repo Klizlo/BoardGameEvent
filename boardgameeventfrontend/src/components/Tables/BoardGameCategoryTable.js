@@ -1,4 +1,14 @@
-import {Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Grid, Snackbar} from "@mui/material";
+import {
+    Alert,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Snackbar,
+    Tooltip
+} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,6 +20,8 @@ import { authenticationService } from "../../service/authenticateService";
 import { Role } from "../../helpers/role";
 import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
+import Box from "@mui/material/Box";
+import AddIcon from "@mui/icons-material/Add";
 
 const GoToDetails = (params) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -48,7 +60,7 @@ const GoToDetails = (params) => {
 
     return (
         <strong key={params.params.row.id}>
-            <Fab
+            <IconButton
                 color={"info"}
                 size={"small"}
                 onClick={() => {
@@ -56,10 +68,10 @@ const GoToDetails = (params) => {
                 }}
             >
                 <InfoIcon/>
-            </Fab>
+            </IconButton>
             { currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
             <strong>
-                <Fab
+                <IconButton
                 color={"warning"}
                 size={"small"}
                 onClick={() => {
@@ -67,14 +79,14 @@ const GoToDetails = (params) => {
                 }}
                 >
                     <Edit />
-                </Fab>
-                <Fab
+                </IconButton>
+                <IconButton
                     color={"error"}
                     size={"small"}
                     onClick={() => {setOpen(true);}}
                 >
                     <DeleteIcon/>
-                </Fab>
+                </IconButton>
                 <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
@@ -109,40 +121,65 @@ const GoToDetails = (params) => {
 }
 
 let columns = [
-    {field: 'name', headerName: 'Board Game Category Name', width: 250, flex: 4},
+    {field: 'name', headerName: 'Board Game Category Name', flex: 1},
     {
         field: 'Options',
         sortable: false,
         renderCell: (props) => {return <GoToDetails params={props} />},
         width: 150,
+        headerAlign: 'center',
+        align: 'center'
     }
 ];
 
 const BoardGameCategoryTable = BoardGameCategoryData => {
 
     const boardGameCategory = BoardGameCategoryData.BoardGameCategoryData;
+    const currentUser = authenticationService.currentUserValue;
     
     return (
     <Grid
         marginLeft={"auto"}
         marginRight={"auto"}
         p={2}
-        border={2}
-        borderColor={"dimgrey"}
-        borderRadius={"12px"}
         container
         alignSelf={"center"}
         alignItems={"center"}
-        bgcolor={'action.hover'}
         width={'90%'}
-        height={700}
     >
         <DataGrid
             rows={boardGameCategory}
             columns={columns}
-            pageSize={20}
-            rowsPerPageOptions={[20]}
+            autoHeight {...boardGameCategory}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
         />
+        {currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
+            <Grid
+                p={1}
+                container
+                direction={"row"}
+                width={'100%'}
+            >
+                <Box sx={{ flexGrow: 1 }} />
+                <Box
+                    justifyContent="flex-end"
+                >
+                    <Tooltip title={<h4>Add new Board Game Category</h4>}>
+                        <IconButton
+                            edge="end"
+                            color={"success"}
+                            onClick={() => {window.location = '/boardGamesCategories/add'}}
+                            size="large"
+                        >
+                            <AddIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            </Grid>
+        ) : (
+            <></>
+        )}
     </Grid>
     );
 }
