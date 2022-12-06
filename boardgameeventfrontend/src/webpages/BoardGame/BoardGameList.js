@@ -1,14 +1,10 @@
 import {useEffect, useState} from "react";
 import Variables from "../../components/Globals/Variables";
 import Box from "@mui/material/Box";
-import {Button, Grid, Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import BoardGameListTable from "../../components/Tables/BoardGameListTable";
-import {Role} from "../../helpers/role";
-import {authenticationService} from "../../service/authenticateService";
 
 const BoardGameList = () => {
-
-    const currentUser = authenticationService.currentUserValue;
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -33,9 +29,9 @@ const BoardGameList = () => {
             )
     }, []);
 
-    if (error){
+    if (error) {
         return <div>ERROR: {error.message}</div>;
-    } else if (!isLoaded){
+    } else if (!isLoaded) {
         return <div>Fetching Data...</div>;
     } else {
         return (
@@ -49,31 +45,24 @@ const BoardGameList = () => {
                     marginLeft={"auto"}
                     marginRight={"auto"}
                     p={2}
-                    border={2}
-                    borderColor={"dimgrey"}
-                    borderRadius={"12px"}
                     container
                     direction={"column"}
                     justifyContent={"space-between"}
                     alignSelf={"center"}
                     alignItems={"center"}
-                    bgcolor={'action.hover'}
                     width={'100%'}
                 >
-                    <Typography sx={{fontSize: 35, fontWeight: 'bold'}} color={"text.secondary"} gutterBottom>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            fontFamily: 'kdam-thmor-pro',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: "white"
+                        }}
+                    >
                         Board Games
                     </Typography>
-                    {currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
-                        <Box>
-                            <Button
-                                onClick={() => {window.location = '/boardGames/add'}}
-                            >
-                                Add Board Game
-                            </Button>
-                        </Box>
-                    ) : (
-                        <></>
-                    )}
                     <BoardGameListTable BoardGamesData={boardGames}/>
                 </Grid>
             </Box>

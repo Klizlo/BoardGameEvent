@@ -1,4 +1,14 @@
-import {Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Grid, Snackbar} from "@mui/material";
+import {
+    Alert,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Snackbar,
+    Tooltip
+} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,6 +20,8 @@ import {authHeader} from "../../helpers/auth-header";
 import {Role} from "../../helpers/role";
 import {Edit} from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Box from "@mui/material/Box";
+import AddIcon from "@mui/icons-material/Add";
 
 const ShowOptions = (params) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -48,33 +60,30 @@ const ShowOptions = (params) => {
 
     return (
         <strong key={params.params.row.id}>
-            <Fab
+            <IconButton
                 color={"info"}
-                size={"small"}
                 onClick={() => {
                     navigate("/boardGames/" + params.params.row.id)
                 }}
             >
                 <InfoIcon/>
-            </Fab>
+            </IconButton>
             { currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
                 <strong>
-                    <Fab
+                    <IconButton
                         color={"warning"}
-                        size={"small"}
                         onClick={() => {
                             navigate('/boardGames/' + params.params.row.id + '/edit')
                         }}
                     >
                         <Edit />
-                    </Fab>
-                    <Fab
+                    </IconButton>
+                    <IconButton
                         color={"error"}
-                        size={"small"}
                         onClick={() => {setOpen(true);}}
                     >
                         <DeleteIcon/>
-                    </Fab>
+                    </IconButton>
                     <Dialog
                         open={open}
                         onClose={() => setOpen(false)}
@@ -109,22 +118,25 @@ const ShowOptions = (params) => {
 }
 
 let columns = [
-    {field: 'name', headerName: 'Game Name', width: 130},
-    {field: 'minNumberOfPlayers', headerName: 'Min Players', width: 100},
-    {field: 'maxNumberOfPlayers', headerName: 'Max Players', width: 100},
-    {field: 'ageRestriction', headerName: 'Age Restriction', width: 120},
-    {field: 'producerName', headerName: 'Producer', width: 200},
-    {field: 'boardGameCategoryName', headerName: 'Category', width: 200},
+    {field: 'name', headerName: 'Game Name', flex: 1},
+    {field: 'minNumberOfPlayers', headerName: 'Min Players', width: 100, headerAlign: 'center', align: 'center'},
+    {field: 'maxNumberOfPlayers', headerName: 'Max Players', width: 100, headerAlign: 'center', align: 'center'},
+    {field: 'ageRestriction', headerName: 'Age Restriction', width: 115, headerAlign: 'center', align: 'center'},
+    {field: 'producerName', headerName: 'Producer', flex: 1},
+    {field: 'boardGameCategoryName', headerName: 'Category', flex: 1},
     {
         field: 'Options',
         sortable: false,
         renderCell: (props) => {return <ShowOptions params={props} />},
-        width: 200,
+        width: 150,
+        headerAlign: 'center',
+        align: 'center'
     }
 ];
 
 const BoardGameListTable = BoardGamesData => {
     const [boardGames, setBoardGames] = useState([]);
+    const currentUser = authenticationService.currentUserValue;
     useEffect(() => {
         const temp = [];
         BoardGamesData.BoardGamesData.map(item => {
@@ -137,22 +149,44 @@ const BoardGameListTable = BoardGamesData => {
         marginLeft={"auto"}
         marginRight={"auto"}
         p={2}
-        border={2}
-        borderColor={"dimgrey"}
-        borderRadius={"12px"}
         container
         alignSelf={"center"}
         alignItems={"center"}
-        bgcolor={'action.hover'}
         width={'90%'}
-        height={700}
     >
         <DataGrid
             rows={boardGames}
             columns={columns}
-            pageSize={20}
-            rowsPerPageOptions={[20]}
+            autoHeight {...boardGames}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
         />
+        {currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
+            <Grid
+                p={1}
+                container
+                direction={"row"}
+                width={'100%'}
+            >
+                <Box sx={{ flexGrow: 1 }} />
+                <Box
+                    justifyContent="flex-end"
+                >
+                    <Tooltip title={<h4>Add new Board Game</h4>}>
+                        <IconButton
+                            edge="end"
+                            color={"success"}
+                            onClick={() => {window.location = '/boardGames/add'}}
+                            size="large"
+                        >
+                            <AddIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            </Grid>
+        ) : (
+            <></>
+        )}
     </Grid>
     );
 }

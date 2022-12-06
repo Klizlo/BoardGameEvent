@@ -1,4 +1,15 @@
-import {Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Grid, Snackbar} from "@mui/material";
+import {
+    Alert,
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Snackbar,
+    Tooltip
+} from "@mui/material";
 import {DataGrid} from '@mui/x-data-grid';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,6 +21,7 @@ import { authenticationService } from "../../service/authenticateService";
 import { Role } from "../../helpers/role";
 import Variables from "../Globals/Variables";
 import { authHeader } from "../../helpers/auth-header";
+import AddIcon from "@mui/icons-material/Add";
 
 const ShowOptions = (params) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -48,40 +60,37 @@ const ShowOptions = (params) => {
 
     return (
         <strong key={params.params.row.id}>
-            <Fab
+            <IconButton
                 color={"info"}
-                size={"small"}
                 onClick={() => {
                     navigate("/producers/" + params.params.row.id)
                 }}
             >
                 <InfoIcon/>
-            </Fab>
+            </IconButton>
             { currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
             <strong>
-                <Fab
+                <IconButton
                 color={"warning"}
-                size={"small"}
                 onClick={() => {
                     navigate('/producers/' + params.params.row.id + '/edit')
                 }}
                 >
                     <Edit />
-                </Fab>
-                <Fab
+                </IconButton>
+                <IconButton
                     color={"error"}
-                    size={"small"}
                     onClick={() => {setOpen(true);}}
                 >
                     <DeleteIcon/>
-                </Fab>
+                </IconButton>
                 <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
                 aria-labelledby="draggable-dialog-title"
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Do you want remove board game category from list?
+                    Do you want remove producer from list?
                 </DialogTitle>
                 <DialogActions>
                 <Button startIcon={<CancelIcon />} autoFocus onClick={() => {setOpen(false)}}>
@@ -109,40 +118,65 @@ const ShowOptions = (params) => {
 }
 
 let columns = [
-    {field: 'name', headerName: 'Producer Name', width: 250, flex: 4},
+    {field: 'name', headerName: 'Producer Name', flex: 1},
     {
         field: 'Options',
         sortable: false,
         renderCell: (props) => {return <ShowOptions params={props} />},
         width: 150,
+        headerAlign: 'center',
+        align: 'center'
     }
 ];
 
 const ProducerTable = producerData => {
 
     const producers = producerData.ProducerData;
+    const currentUser = authenticationService.currentUserValue;
     
     return (
     <Grid
         marginLeft={"auto"}
         marginRight={"auto"}
         p={2}
-        border={2}
-        borderColor={"dimgrey"}
-        borderRadius={"12px"}
         container
         alignSelf={"center"}
         alignItems={"center"}
-        bgcolor={'action.hover'}
         width={'90%'}
-        height={700}
     >
         <DataGrid
             rows={producers}
             columns={columns}
-            pageSize={20}
-            rowsPerPageOptions={[20]}
+            autoHeight {...producers}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
         />
+        {currentUser && currentUser.user.roles.map((role) => role.name).includes(Role.Admin) ? (
+            <Grid
+                p={1}
+                container
+                direction={"row"}
+                width={'100%'}
+            >
+                <Box sx={{ flexGrow: 1 }} />
+                <Box
+                    justifyContent="flex-end"
+                >
+                    <Tooltip title={<h4>Add new Producer</h4>}>
+                        <IconButton
+                            edge="end"
+                            color={"success"}
+                            onClick={() => {window.location = '/producers/add'}}
+                            size="large"
+                        >
+                            <AddIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            </Grid>
+        ) : (
+            <></>
+        )}
     </Grid>
     );
 }
