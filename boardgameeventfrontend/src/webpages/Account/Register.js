@@ -148,7 +148,7 @@ export default function RegisterPage() {
                             </LoadingButton>
                             <Grid container>
                                 <Grid item>
-                                <Link href="/login" variant="body2" color='#fe2800'>
+                                <Link href="/logIn" variant="body2" color='#fe2800'>
                                     {"Sing in"}
                                 </Link>
                                 </Grid>

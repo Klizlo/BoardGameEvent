@@ -14,6 +14,9 @@ import ProducerList from "./Producer/ProducerList";
 import Producer from "./Producer/Producer";
 import EditProducer from "./Producer/EditProducer";
 import AddProducer from "./Producer/AddProducer";
+import BoardGame from "./BoardGame/BoardGame";
+import EditBoardGame from "./BoardGame/EditBoardGame";
+import AddBoardGame from "./BoardGame/AddBoardGame";
 import BoardGameCategoryList from "./BoardGameCategory/BoardGameCategoryList";
 import BoardGameCategory from "./BoardGameCategory/BoardGameCategory";
 import EditBoardGameCategory from "./BoardGameCategory/EditBoardGameCategory";
@@ -48,8 +51,9 @@ const WebPages = () => {
             <NavBar sites={sites}/>
             <Routes>
                 <Route path='/boardGames' element={<BoardGameList />}/>
-                <Route path='/boardGames/add' element={<Guard component={<BoardGameList/>} roles={[Role.Admin]} />} />
-                <Route path="/boardGames/{id}" element={<BoardGameList/>} />
+                <Route path="/boardGames/:id" element={<BoardGame/>} />
+                <Route path='/boardGames/:id/edit' element={<Guard component={<EditBoardGame/>} roles={[Role.Admin]}/>} />
+                <Route path='/boardGames/add' element={<Guard component={<AddBoardGame/>} roles={[Role.Admin]} />} />
                 <Route path="/createEvent" element={<BoardGameList/>} />
                 <Route path="/eventList" element={<EventList/>} />
                 <Route path='/producers' element={<ProducerList />} />
