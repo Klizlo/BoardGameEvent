@@ -21,6 +21,7 @@ import BoardGameCategoryList from "./BoardGameCategory/BoardGameCategoryList";
 import BoardGameCategory from "./BoardGameCategory/BoardGameCategory";
 import EditBoardGameCategory from "./BoardGameCategory/EditBoardGameCategory";
 import AddBoardGameCategory from "./BoardGameCategory/AddBoardGameCategory";
+import Profile from "./Account/Profile";
 
 const WebPages = () => {
     const sites = [
@@ -50,6 +51,7 @@ const WebPages = () => {
         <Router>
             <NavBar sites={sites}/>
             <Routes>
+                <Route path='/profile' element={<Guard component={<Profile/>} roles={[Role.User]}/>} />
                 <Route path='/boardGames' element={<BoardGameList />}/>
                 <Route path="/boardGames/:id" element={<BoardGame/>} />
                 <Route path='/boardGames/:id/edit' element={<Guard component={<EditBoardGame/>} roles={[Role.Admin]}/>} />

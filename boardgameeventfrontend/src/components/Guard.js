@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { authenticationService } from "../service/authenticateService";
 
 export const Guard = ({component: children, roles}) => {
-    var currentUser = authenticationService.currentUserValue;
+    let currentUser = authenticationService.currentUserValue;
     if(!currentUser){
         return <Navigate to={{pathname: "/login"}} />
     }
@@ -19,8 +19,6 @@ const checkRole = (roles, currentUser) => {
     if(currentUser === null){
         return false;
     }
-    if(roles.some((role) => currentUser.user.roles.map(role => role.name).includes(role)) === true){
-        return true;
-    }
-    return false;
+    return roles.some((role) => currentUser.user.roles.map(role => role.name).includes(role)) === true;
+
 }
