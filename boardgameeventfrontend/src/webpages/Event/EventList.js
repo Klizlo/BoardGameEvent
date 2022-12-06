@@ -1,15 +1,18 @@
 import {useEffect, useState} from "react";
-import Variables from "../components/Globals/Variables";
+import Variables from "../../components/Globals/Variables";
 import Box from "@mui/material/Box";
-import {Grid, Typography} from "@mui/material";
-import BoardGamesTable from "../components/Tables/BoardGamesTable";
+import {Button, Grid, Typography} from "@mui/material";
+import EventListTable from "../../components/Tables/EventListTable";
+import { Role } from "../../helpers/role";
+import { authenticationService } from "../../service/authenticateService";
 
-const BoardGames = () => {
+const EventList = () => {
+    const currentUser = authenticationService.currentUserValue;
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [boardGames, setBoardGames] = useState([]);
-    const endpoint = Variables.API + '/boardGames';
+    const [events, setEvents] = useState([]);
+    const endpoint = Variables.API + '/events';
     useEffect(() => {
         fetch(endpoint, {
             method: 'GET',
@@ -18,8 +21,7 @@ const BoardGames = () => {
             .then(
                 (data) => {
                     setIsLoaded(true);
-                    setBoardGames(data);
-                    console.log(data);
+                    setEvents(data);
                 },
                 (error) => {
                     setIsLoaded(true);
@@ -45,25 +47,21 @@ const BoardGames = () => {
                     marginLeft={"auto"}
                     marginRight={"auto"}
                     p={2}
-                    border={2}
-                    borderColor={"dimgrey"}
-                    borderRadius={"12px"}
                     container
                     direction={"column"}
                     justifyContent={"space-between"}
                     alignSelf={"center"}
                     alignItems={"center"}
-                    bgcolor={'action.hover'}
                     width={'100%'}
                 >
                     <Typography sx={{fontSize: 35, fontWeight: 'bold'}} color={"text.secondary"} gutterBottom>
-                        Board Games
+                       Events
                     </Typography>
-                    <BoardGamesTable BoardGamesData={boardGames}/>
+                    <EventListTable eventData={events}/>
                 </Grid>
             </Box>
         );
     }
 }
 
-export default BoardGames;
+export default EventList;
