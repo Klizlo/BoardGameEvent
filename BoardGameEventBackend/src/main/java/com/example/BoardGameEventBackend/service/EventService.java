@@ -52,7 +52,7 @@ public class EventService {
 
         Event eventToEdit = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException(id.toString()));
 
-        if(eventRepository.existsByName(event.getName())){
+        if(!event.getName().equals(eventToEdit.getName()) && eventRepository.existsByName(event.getName())){
             throw new EventExistsException("Name " + event.getName() + " is already taken.");
         }
 
