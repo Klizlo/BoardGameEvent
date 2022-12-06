@@ -1,25 +1,18 @@
 import {useState} from "react";
 import {Box} from "@mui/system";
 import {
-    Alert,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogTitle,
     Divider,
     Grid,
-    Snackbar,
-    TextField,
     Typography
 } from "@mui/material";
-import {Role} from "../../helpers/role";
-import {Cancel, Delete, Edit} from "@mui/icons-material";
 import {authenticationService} from "../../service/authenticateService";
-import EventList from "../../webpages/Event/EventList";
+import EventListTable from "../Tables/EventListTable";
 
 export default function ProfileDetails(events) {
 
     const eventData = events.events;
+
+    console.log(eventData);
 
     const currentUser = authenticationService.currentUserValue;
 
@@ -138,7 +131,21 @@ export default function ProfileDetails(events) {
                        Your Events:
                     </Typography>
                     <Divider/>
-                    <EventListTable eventData={eventData}/>
+                    <EventListTable eventData={eventData.filter(event => event.organizer.id === currentUser.user.id)}/>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontFamily: 'kdam-thmor-pro',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'white'
+                        }}
+                    >
+                       Event You Have Joined:
+                    </Typography>
+                    <Divider/>
+                    <EventListTable showed={false} eventData={eventData.filter(event => event.organizer.id !== currentUser.user.id)}/>
+                    
                 </Box>
             </Grid>
         </Grid>
