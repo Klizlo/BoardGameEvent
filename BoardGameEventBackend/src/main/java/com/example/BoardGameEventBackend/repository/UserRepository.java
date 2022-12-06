@@ -18,7 +18,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String username);
 
-    @Query("select u.events, u.createdEvents from User u where u.id = ?1")
+    @Query("select u.events from User u where u.id = ?1")
     List<Event> findEventsByUser(Long id);
+
+    @Query("select u.createdEvents from User u where u.id = ?1")
+    List<Event> findCreatedEventsByUser(Long id);
 
 }
