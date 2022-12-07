@@ -39,7 +39,7 @@ class App extends React.Component {
       <ThemeProvider theme={darkTheme}>
         <Box sx={{
           bgcolor: "background.default",
-          height: "100vh",
+          maxHeight: "550vh",
           minHeight: "100vh"
         }}>
           <WebPages/>

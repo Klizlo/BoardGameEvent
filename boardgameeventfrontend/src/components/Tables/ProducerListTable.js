@@ -167,7 +167,7 @@ const ProducerTable = producerData => {
                         <IconButton
                             edge="end"
                             color={"success"}
-                            onClick={() => {window.location = '/producers/add'}}
+                            onClick={() => {window.location = '/events/add'}}
                             size="large"
                         >
                             <AddIcon/>

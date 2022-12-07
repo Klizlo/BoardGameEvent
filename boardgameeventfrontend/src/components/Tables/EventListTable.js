@@ -108,16 +108,18 @@ const GoToDetails = (params) => {
 }
 
 let columns = [
-    {field: 'name', headerName: 'Producer Name', width: 250},
-    {field: 'numberOfPlayers', headerName: "Number of wanted players", width: 100},
-    {field: 'date', headerName: "Event date", width: 150},
-    {field: 'boardGame', headerName: "Board Game", width: 250},
-    {field: 'organizer', headerName: "Organizer", width: 150},
+    {field: 'name', headerName: 'Producer Name', flex:2},
+    {field: 'numberOfPlayers', headerName: "Number of wanted players", flex:1},
+    {field: 'date', headerName: "Event date", flex:1},
+    {field: 'boardGame', headerName: "Board Game", flex:2},
+    {field: 'organizer', headerName: "Organizer", flex:1},
     {
         field: 'Options',
         sortable: false,
         renderCell: (props) => {return <GoToDetails params={props} />},
         width: 150,
+        headerAlign: 'center',
+        align: 'center'
     }
 ];
 
